@@ -94,10 +94,8 @@ jobs:
       - name: ⚙️ Build
         run: npm run build
 
-      - name: 🐳 Docker compose
-        run: docker-compose up -d && sleep 3 && npx prisma migrate reset --force
-        env:
-          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/postgres"
+      - name: 🛠 Setup Database
+        run: npx prisma migrate reset --force
 
       - name: 🌳 Cypress run
         uses: cypress-io/github-action@v2
