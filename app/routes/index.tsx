@@ -31,7 +31,7 @@ export default function Index() {
       </div>
       <div>
         <p>
-          <strong>Welcome to the Remix Fly Stack!</strong>
+          <strong>Welcome to the Remix Indie Stack!</strong>
           <br />
           Please check the README.md file for instructions on how to get this
           project deployed.
@@ -40,6 +40,9 @@ export default function Index() {
         <ul>
           <li>
             <a href="https://remix.run/docs">Remix Docs</a>
+          </li>
+          <li>
+            <a href="https://remix.run/stacks">Remix Stacks</a>
           </li>
           <li>
             <a href="https://rmx.as/discord">Remix Discord Community</a>
