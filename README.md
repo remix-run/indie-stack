@@ -10,12 +10,15 @@ Learn more about [Remix Stacks](https://remix.run/stacks).
 - [GitHub Actions](https://github.com/features/actions) for deploy on merge to production and staging environments
 - Email/Password Authentication with [cookie-based sessions](https://remix.run/docs/en/v1/api/remix#createcookiesessionstorage)
 - Database ORM with [Prisma](https://prisma.io)
+- Styling with [Tailwind](https://tailwindcss.com/)
 - End-to-end testing with [Cypress](https://cypress.io)
 - Local third party request mocking with [MSW](https://mswjs.io)
 - Unit testing with [Vitest](https://vitest.dev)
 - Code formatting with [prettier](https://prettier.io)
 - Linting with [ESLint](https://eslint.org)
 - Static Types with [TypeScript](https://typescriptlang.org)
+
+Not a fan of bits of the stack? Fork it, change it, and use `npx create-remix --template your/repo`! Make it your own.
 
 ## Fly Setup
 

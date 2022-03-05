@@ -9,11 +9,11 @@ import {
 } from "remix";
 import type { LinksFunction, MetaFunction, LoaderFunction } from "remix";
 
-import appStyles from "./styles/app.css";
+import tailwindStylesheetUrl from "./styles/tailwind.css";
 import { getUser } from "./session.server";
 
 export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: appStyles }];
+  return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
 };
 
 export const meta: MetaFunction = () => {
@@ -41,7 +41,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="bg-[url('/indie.jpg')] bg-center bg-origin-border bg-no-repeat">
         <div>
           <Outlet />
         </div>

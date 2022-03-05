@@ -87,38 +87,17 @@ export default function JoinPage() {
   }, [actionData]);
 
   return (
-    <div
-      style={{
-        maxWidth: 500,
-        margin: "30vh auto 0 auto",
-      }}
-    >
-      <h1 style={{ textAlign: "center" }}>Join Remix Notes</h1>
-      <Form
-        method="post"
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 12,
-          width: 300,
-          margin: "auto",
-        }}
-      >
+    <div className="max-w-lg mt-[30vh] mx-auto p-8 bg-white rounded-md">
+      <h1 className="text-center text-2xl pb-4">Join Remix Notes</h1>
+      <Form method="post" className="flex flex-col gap-3 w-72 mx-auto">
         <input type="hidden" name="redirectTo" value={redirectTo} />
         <div>
-          <label
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 4,
-              width: "100%",
-            }}
-          >
+          <label className="flex flex-col gap-1 w-full">
             <span>Email address</span>
             <input
               ref={emailRef}
               autoFocus={true}
-              style={{ flex: 1, lineHeight: 2, fontSize: "1.1rem" }}
+              className="flex-1 leading-loose text-lg px-3 border-blue-500 border-2 rounded-md"
               name="email"
               type="email"
               autoComplete="email"
@@ -129,25 +108,18 @@ export default function JoinPage() {
             />
           </label>
           {actionData?.errors?.email && (
-            <Alert style={{ color: "red", paddingTop: 4 }} id="email-error">
+            <Alert className="text-red-700 pt-1" id="email-error">
               {actionData.errors.email}
             </Alert>
           )}
         </div>
 
         <div>
-          <label
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 4,
-              width: "100%",
-            }}
-          >
+          <label className="flex flex-col gap-1 w-full">
             <span>Password</span>
             <input
               ref={passwordRef}
-              style={{ flex: 1, lineHeight: 2, fontSize: "1.1rem" }}
+              className="flex-1 leading-loose text-lg px-3 border-blue-500 border-2 rounded-md"
               name="password"
               type="password"
               autoComplete="new-password"
@@ -158,20 +130,26 @@ export default function JoinPage() {
             />
           </label>
           {actionData?.errors?.password && (
-            <Alert style={{ color: "red", paddingTop: 4 }} id="password-error">
+            <Alert className="text-red-700 pt-1" id="password-error">
               {actionData.errors.password}
             </Alert>
           )}
         </div>
 
-        <div style={{ textAlign: "right" }}>
-          <button type="submit">Join</button>
+        <div className="text-right">
+          <button
+            type="submit"
+            className="bg-blue-700 text-blue-100 hover:bg-blue-900 focus:bg-blue-900 rounded-sm py-2 px-4"
+          >
+            Join
+          </button>
         </div>
       </Form>
 
-      <div style={{ paddingTop: 24, textAlign: "right" }}>
+      <div className="text-right pt-6">
         Already have an account?{" "}
         <Link
+          className="text-blue-500 underline"
           to={{
             pathname: "/login",
             search: redirectTo ? `?redirectTo=${redirectTo}` : undefined,

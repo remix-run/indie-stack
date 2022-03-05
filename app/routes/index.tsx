@@ -4,14 +4,9 @@ import { useOptionalUser } from "~/utils";
 export default function Index() {
   const user = useOptionalUser();
   return (
-    <div
-      style={{
-        maxWidth: 500,
-        margin: "30vh auto 0 auto",
-      }}
-    >
-      <div style={{ textAlign: "center", paddingBottom: 16 }}>
-        <h1>Remix Notes App</h1>
+    <div className="max-w-lg mt-[30vh] mx-auto p-8 bg-white rounded-md">
+      <div className="text-center pb-4">
+        <h1 className="text-5xl">Remix Indie Stack</h1>
         <p>
           This app will get you started with Remix in no time.
           <br />
@@ -24,9 +19,13 @@ export default function Index() {
           )}
         </p>
         {user ? (
-          <Link to="/notes">Check your notes</Link>
+          <Link className="underline text-blue-500" to="/notes">
+            Check your notes
+          </Link>
         ) : (
-          <Link to="/login">Login</Link>
+          <Link className="underline text-blue-500" to="/login">
+            Login
+          </Link>
         )}
       </div>
       <div>
@@ -36,19 +35,39 @@ export default function Index() {
           Please check the README.md file for instructions on how to get this
           project deployed.
         </p>
-        <p>Learn more about Remix:</p>
-        <ul>
+        <p className="pt-4">Learn more about Remix:</p>
+        <ul className="pt-2 list-disc list-inside">
           <li>
-            <a href="https://remix.run/docs">Remix Docs</a>
+            <a
+              className="underline text-blue-500"
+              href="https://remix.run/docs"
+            >
+              Remix Docs
+            </a>
           </li>
           <li>
-            <a href="https://remix.run/stacks">Remix Stacks</a>
+            <a
+              className="underline text-blue-500"
+              href="https://remix.run/stacks"
+            >
+              Remix Stacks
+            </a>
           </li>
           <li>
-            <a href="https://rmx.as/discord">Remix Discord Community</a>
+            <a
+              className="underline text-blue-500"
+              href="https://rmx.as/discord"
+            >
+              Remix Discord Community
+            </a>
           </li>
           <li>
-            <a href="https://github.com/remix-run/remix">Remix GitHub</a>
+            <a
+              className="underline text-blue-500"
+              href="https://github.com/remix-run/remix"
+            >
+              Remix GitHub
+            </a>
           </li>
         </ul>
       </div>

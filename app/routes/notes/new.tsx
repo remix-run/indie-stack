@@ -63,12 +63,12 @@ export default function NewNotePage() {
       }}
     >
       <div>
-        <label>
-          <span style={{ display: "block" }}>Title: </span>
+        <label className="flex flex-col gap-1 w-full">
+          <span>Title: </span>
           <input
             ref={titleRef}
             name="title"
-            style={{ marginTop: 4, fontSize: "1.1rem", lineHeight: 2 }}
+            className="flex-1 leading-loose text-lg px-3 border-blue-500 border-2 rounded-md"
             aria-invalid={actionData?.errors?.title ? true : undefined}
             aria-errormessage={
               actionData?.errors?.title ? "title-error" : undefined
@@ -76,25 +76,20 @@ export default function NewNotePage() {
           />
         </label>
         {actionData?.errors?.title && (
-          <Alert style={{ color: "red" }} id="title=error">
+          <Alert className="text-red-700 pt-1" id="title=error">
             {actionData.errors.title}
           </Alert>
         )}
       </div>
 
       <div>
-        <label>
-          <span style={{ display: "block" }}>Body: </span>
+        <label className="flex flex-col gap-1 w-full">
+          <span>Body: </span>
           <textarea
             ref={bodyRef}
             name="body"
             rows={8}
-            style={{
-              marginTop: 4,
-              width: "100%",
-              fontSize: "1.1rem",
-              lineHeight: 1.4,
-            }}
+            className="flex-1 py-2 leading-6 text-lg px-3 w-full border-blue-500 border-2 rounded-md"
             aria-invalid={actionData?.errors?.body ? true : undefined}
             aria-errormessage={
               actionData?.errors?.body ? "body-error" : undefined
@@ -102,14 +97,19 @@ export default function NewNotePage() {
           />
         </label>
         {actionData?.errors?.body && (
-          <Alert style={{ color: "red" }} id="body=error">
+          <Alert className="text-red-700 pt-1" id="body=error">
             {actionData.errors.body}
           </Alert>
         )}
       </div>
 
-      <div>
-        <button type="submit">Save</button>
+      <div className="text-right">
+        <button
+          type="submit"
+          className="bg-blue-700 text-blue-100 hover:bg-blue-900 focus:bg-blue-900 rounded-sm py-2 px-4"
+        >
+          Save
+        </button>
       </div>
     </Form>
   );
