@@ -7,7 +7,7 @@
     "seed": "node --require esbuild-register prisma/seed.ts"
   },
   "scripts": {
-    "postinstall": "remix setup node && npm run build",
+    "postinstall": "remix setup node",
     "build": "npm run build:css && npm run build:remix",
     "build:remix": "remix build",
     "build:css": "npm run generate:css -- --minify",
