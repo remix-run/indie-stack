@@ -41,7 +41,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="bg-[url('/indie.jpg')] bg-center bg-origin-border bg-no-repeat">
+      <body className="bg-[url('/background.jpg')] bg-center bg-origin-border bg-no-repeat">
         <div>
           <Outlet />
         </div>
