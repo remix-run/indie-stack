@@ -15,7 +15,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const userId = await requireUserId(request);
   invariant(params.noteId, "noteId not found");
 
-  const note = await getNote(userId, params.noteId);
+  const note = await getNote({ userId, id: params.noteId });
   if (!note) {
     throw new Response("Not Found", { status: 404 });
   }
@@ -26,7 +26,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   const userId = await requireUserId(request);
   invariant(params.noteId, "noteId not found");
 
-  await deleteNote(userId, params.noteId);
+  await deleteNote({ userId, id: params.noteId });
 
   return redirect("/notes");
 };

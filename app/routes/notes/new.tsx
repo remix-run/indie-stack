@@ -34,7 +34,7 @@ export const action: ActionFunction = async ({ request }) => {
     );
   }
 
-  const note = await createNote(title, body, userId);
+  const note = await createNote({ title, body, userId });
 
   return redirect(`/notes/${note.id}`);
 };
