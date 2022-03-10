@@ -56,12 +56,12 @@ export const action: ActionFunction = async ({ request }) => {
     );
   }
 
-  return createUserSession(
+  return createUserSession({
     request,
-    user.id,
-    remember === "on" ? true : false,
-    typeof redirectTo === "string" ? redirectTo : "/notes"
-  );
+    userId: user.id,
+    remember: remember === "on" ? true : false,
+    redirectTo: typeof redirectTo === "string" ? redirectTo : "/notes",
+  });
 };
 
 export const meta: MetaFunction = () => {

@@ -57,12 +57,12 @@ export const action: ActionFunction = async ({ request }) => {
 
   const user = await createUser(email, password);
 
-  return createUserSession(
+  return createUserSession({
     request,
-    user.id,
-    false,
-    typeof redirectTo === "string" ? redirectTo : "/"
-  );
+    userId: user.id,
+    remember: false,
+    redirectTo: typeof redirectTo === "string" ? redirectTo : "/",
+  });
 };
 
 export const meta: MetaFunction = () => {
