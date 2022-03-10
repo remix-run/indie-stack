@@ -59,29 +59,68 @@ export default function Index() {
           <div className="mt-6 flex flex-wrap justify-center gap-8">
             {[
               {
-                src: "https://fly.io/public/images/brand/logo.svg",
+                src: "https://user-images.githubusercontent.com/1500684/157764397-ccd8ea10-b8aa-4772-a99b-35de937319e1.svg",
                 alt: "Fly.io",
+                href: "https://fly.io",
               },
               {
-                src: "https://upload.wikimedia.org/wikipedia/commons/3/38/SQLite370.svg",
+                src: "https://user-images.githubusercontent.com/1500684/157764395-137ec949-382c-43bd-a3c0-0cb8cb22e22d.svg",
                 alt: "SQLite",
+                href: "https://sqlite.org",
               },
               {
-                src: "https://raw.githubusercontent.com/prisma/presskit/main/Logos/Logo-Default-Prisma.svg",
+                src: "https://user-images.githubusercontent.com/1500684/157764484-ad64a21a-d7fb-47e3-8669-ec046da20c1f.svg",
                 alt: "Prisma",
+                href: "https://prisma.io",
               },
               {
-                src: "https://tailwindcss.com/_next/static/media/tailwindcss-logotype.ed60a6f85c663923c4d6ee9d85f359cd.svg",
+                src: "https://user-images.githubusercontent.com/1500684/157764276-a516a239-e377-4a20-b44a-0ac7b65c8c14.svg",
                 alt: "Tailwind",
+                href: "https://tailwindcss.com",
               },
               {
-                src: "https://raw.githubusercontent.com/cypress-io/cypress-icons/master/src/logo/cypress-io-logo.svg",
+                src: "https://user-images.githubusercontent.com/1500684/157764454-48ac8c71-a2a9-4b5e-b19c-edef8b8953d6.svg",
                 alt: "Cypress",
+                href: "https://www.cypress.io",
+              },
+              {
+                src: "https://user-images.githubusercontent.com/1500684/157772386-75444196-0604-4340-af28-53b236faa182.svg",
+                alt: "MSW",
+                href: "https://mswjs.io",
+              },
+              {
+                src: "https://user-images.githubusercontent.com/1500684/157772447-00fccdce-9d12-46a3-8bb4-fac612cdc949.svg",
+                alt: "Vitest",
+                href: "https://vitest.dev",
+              },
+              {
+                src: "https://user-images.githubusercontent.com/1500684/157772662-92b0dd3a-453f-4d18-b8be-9fa6efde52cf.png",
+                alt: "Testing Library",
+                href: "https://testing-library.com",
+              },
+              {
+                src: "https://user-images.githubusercontent.com/1500684/157772934-ce0a943d-e9d0-40f8-97f3-f464c0811643.svg",
+                alt: "Prettier",
+                href: "https://prettier.io",
+              },
+              {
+                src: "https://user-images.githubusercontent.com/1500684/157772990-3968ff7c-b551-4c55-a25c-046a32709a8e.svg",
+                alt: "ESLint",
+                href: "https://eslint.org",
+              },
+              {
+                src: "https://user-images.githubusercontent.com/1500684/157773063-20a0ed64-b9f8-4e0b-9d1e-0b65a3d4a6db.svg",
+                alt: "TypeScript",
+                href: "https://typescriptlang.org",
               },
             ].map((img) => (
-              <div key={img.src} className="flex justify-center">
-                <img className="w-32 grayscale" alt={img.alt} src={img.src} />
-              </div>
+              <a
+                key={img.href}
+                href={img.href}
+                className="flex h-16 w-32 justify-center p-1 grayscale transition hover:grayscale-0 focus:grayscale-0"
+              >
+                <img alt={img.alt} src={img.src} />
+              </a>
             ))}
           </div>
         </div>
@@ -89,48 +128,3 @@ export default function Index() {
     </main>
   );
 }
-
-// <div className="bg-[url('https://upload.wikimedia.org/wikipedia/commons/6/68/Sonic_Youth_live_20050707.jpg')] flex flex-col items-center justify-center min-h-screen bg-center bg-cover bg-no-repeat">
-// <div className="flex-1">
-//   <p>
-//     <strong>Welcome to the Remix Indie Stack!</strong>
-//     <br />
-//     Please check the README.md file for instructions on how to get this
-//     project deployed.
-//   </p>
-//   <p className="pt-4">Learn more about Remix:</p>
-//   <ul className="pt-2 list-disc list-inside">
-//     <li>
-//       <a
-//         className="underline text-blue-500"
-//         href="https://remix.run/docs"
-//       >
-//         Remix Docs
-//       </a>
-//     </li>
-//     <li>
-//       <a
-//         className="underline text-blue-500"
-//         href="https://remix.run/stacks"
-//       >
-//         Remix Stacks
-//       </a>
-//     </li>
-//     <li>
-//       <a
-//         className="underline text-blue-500"
-//         href="https://rmx.as/discord"
-//       >
-//         Remix Discord Community
-//       </a>
-//     </li>
-//     <li>
-//       <a
-//         className="underline text-blue-500"
-//         href="https://github.com/remix-run/remix"
-//       >
-//         Remix GitHub
-//       </a>
-//     </li>
-//   </ul>
-// </div>
