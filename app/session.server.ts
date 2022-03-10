@@ -1,3 +1,4 @@
+import type { User } from "@prisma/client";
 import { createCookieSessionStorage, redirect } from "remix";
 import invariant from "tiny-invariant";
 import { getUserById } from "./models/user.server";
@@ -8,7 +9,7 @@ export const sessionStorage = createCookieSessionStorage({
   cookie: {
     name: "__session",
     httpOnly: true,
-    maxAge: 60 * 60 * 24 * 7, // 7 days
+    maxAge: 0,
     path: "/",
     sameSite: "lax",
     secrets: [process.env.SESSION_SECRET],
@@ -23,22 +24,22 @@ export async function getSession(request: Request) {
   return sessionStorage.getSession(cookie);
 }
 
-export async function getUserId(request: Request) {
+export async function getUserId(request: Request): Promise<string | undefined> {
   const session = await getSession(request);
   const userId = session.get(USER_SESSION_KEY);
   return userId;
 }
 
-export async function getUser(request: Request) {
+export async function getUser(request: Request): Promise<null | User> {
   const userId = await getUserId(request);
-  if (!userId) return null;
+  if (userId === undefined) return null;
   return getUserById(userId);
 }
 
 export async function requireUserId(
   request: Request,
   redirectTo: string = new URL(request.url).pathname
-) {
+): Promise<string> {
   const userId = await getUserId(request);
   if (!userId) {
     const searchParams = new URLSearchParams([["redirectTo", redirectTo]]);
@@ -55,13 +56,18 @@ export async function requireUser(request: Request) {
 export async function createUserSession(
   request: Request,
   userId: string,
+  remember: boolean,
   redirectTo: string
 ) {
   const session = await getSession(request);
   session.set(USER_SESSION_KEY, userId);
   return redirect(redirectTo, {
     headers: {
-      "Set-Cookie": await sessionStorage.commitSession(session),
+      "Set-Cookie": await sessionStorage.commitSession(session, {
+        maxAge: remember
+          ? 60 * 60 * 24 * 7 // 7 days
+          : undefined,
+      }),
     },
   });
 }

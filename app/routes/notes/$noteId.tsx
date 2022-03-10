@@ -36,12 +36,13 @@ export default function NoteDetailsPage() {
 
   return (
     <div>
-      <h3 className="font-bold text-2xl">{data.note.title}</h3>
+      <h3 className="text-2xl font-bold">{data.note.title}</h3>
       <p className="py-6">{data.note.body}</p>
-      <Form method="post" className="text-right">
+      <hr className="my-4" />
+      <Form method="post">
         <button
           type="submit"
-          className="bg-blue-700 text-blue-100 hover:bg-blue-900 focus:bg-blue-900 rounded-sm py-2 px-4"
+          className="rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
         >
           Delete
         </button>

@@ -63,12 +63,12 @@ export default function NewNotePage() {
       }}
     >
       <div>
-        <label className="flex flex-col gap-1 w-full">
+        <label className="flex w-full flex-col gap-1">
           <span>Title: </span>
           <input
             ref={titleRef}
             name="title"
-            className="flex-1 leading-loose text-lg px-3 border-blue-500 border-2 rounded-md"
+            className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose"
             aria-invalid={actionData?.errors?.title ? true : undefined}
             aria-errormessage={
               actionData?.errors?.title ? "title-error" : undefined
@@ -76,20 +76,20 @@ export default function NewNotePage() {
           />
         </label>
         {actionData?.errors?.title && (
-          <Alert className="text-red-700 pt-1" id="title=error">
+          <Alert className="pt-1 text-red-700" id="title=error">
             {actionData.errors.title}
           </Alert>
         )}
       </div>
 
       <div>
-        <label className="flex flex-col gap-1 w-full">
+        <label className="flex w-full flex-col gap-1">
           <span>Body: </span>
           <textarea
             ref={bodyRef}
             name="body"
             rows={8}
-            className="flex-1 py-2 leading-6 text-lg px-3 w-full border-blue-500 border-2 rounded-md"
+            className="w-full flex-1 rounded-md border-2 border-blue-500 py-2 px-3 text-lg leading-6"
             aria-invalid={actionData?.errors?.body ? true : undefined}
             aria-errormessage={
               actionData?.errors?.body ? "body-error" : undefined
@@ -97,7 +97,7 @@ export default function NewNotePage() {
           />
         </label>
         {actionData?.errors?.body && (
-          <Alert className="text-red-700 pt-1" id="body=error">
+          <Alert className="pt-1 text-red-700" id="body=error">
             {actionData.errors.body}
           </Alert>
         )}
@@ -106,7 +106,7 @@ export default function NewNotePage() {
       <div className="text-right">
         <button
           type="submit"
-          className="bg-blue-700 text-blue-100 hover:bg-blue-900 focus:bg-blue-900 rounded-sm py-2 px-4"
+          className="rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
         >
           Save
         </button>

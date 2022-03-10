@@ -35,16 +35,14 @@ export let loader: LoaderFunction = async ({ request }) => {
 
 export default function App() {
   return (
-    <html lang="en">
+    <html lang="en" className="h-full">
       <head>
         <meta charSet="utf-8" />
         <Meta />
         <Links />
       </head>
-      <body className="bg-[url('/background.jpg')] bg-center bg-origin-border bg-no-repeat">
-        <div>
-          <Outlet />
-        </div>
+      <body className="h-full">
+        <Outlet />
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
