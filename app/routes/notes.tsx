@@ -45,7 +45,7 @@ export default function NotesPage() {
           <hr />
 
           {data.noteListItems.length === 0 ? (
-            <p>No notes yet</p>
+            <p className="p-4">No notes yet</p>
           ) : (
             <ol>
               {data.noteListItems.map((note) => (
