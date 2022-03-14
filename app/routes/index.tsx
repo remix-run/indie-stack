@@ -18,8 +18,8 @@ export default function Index() {
             </div>
             <div className="relative px-4 py-16 sm:px-6 sm:py-24 lg:py-32 lg:px-8">
               <h1 className="text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl">
-                <span className="block text-yellow-500 drop-shadow-md">
-                  INDIE STACK
+                <span className="block uppercase text-yellow-500 drop-shadow-md">
+                  Indie Stack
                 </span>
               </h1>
               <p className="mx-auto mt-6 max-w-lg text-center text-xl text-white sm:max-w-3xl">
@@ -44,7 +44,7 @@ export default function Index() {
                     </Link>
                     <Link
                       to="/login"
-                      className="flex items-center justify-center rounded-md  bg-yellow-500 px-4 py-3 font-medium text-white hover:bg-yellow-600  "
+                      className="flex items-center justify-center rounded-md bg-yellow-500 px-4 py-3 font-medium text-white hover:bg-yellow-600  "
                     >
                       Log In
                     </Link>

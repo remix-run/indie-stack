@@ -12,15 +12,15 @@ function getRandomString(length) {
   return crypto.randomBytes(length).toString("hex");
 }
 
-async function main() {
-  const README_PATH = path.join(__dirname, "../README.md");
-  const FLY_TOML_PATH = path.join(__dirname, "../fly.toml");
-  const EXAMPLE_ENV_PATH = path.join(__dirname, "../.env.example");
-  const ENV_PATH = path.join(__dirname, "../.env");
+async function main({ rootDirectory }) {
+  const README_PATH = path.join(rootDirectory, "README.md");
+  const FLY_TOML_PATH = path.join(rootDirectory, "fly.toml");
+  const EXAMPLE_ENV_PATH = path.join(rootDirectory, ".env.example");
+  const ENV_PATH = path.join(rootDirectory, ".env");
 
-  const REPLACER = "indie-stack-template";
+  const REPLACER = "blues-stack-template";
 
-  const DIR_NAME = path.basename(path.resolve(__dirname, ".."));
+  const DIR_NAME = path.basename(rootDirectory);
   const SUFFIX = getRandomString(2);
   const APP_NAME = DIR_NAME + "-" + SUFFIX;
 
@@ -50,4 +50,4 @@ async function main() {
   ]);
 }
 
-void main();
+module.exports = main;

@@ -1,4 +1,4 @@
-import type { User } from "@prisma/client";
+import type { User } from "./models/user.server";
 import { useMemo } from "react";
 import { useMatches } from "remix";
 
