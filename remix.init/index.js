@@ -18,7 +18,7 @@ async function main({ rootDirectory }) {
   const EXAMPLE_ENV_PATH = path.join(rootDirectory, ".env.example");
   const ENV_PATH = path.join(rootDirectory, ".env");
 
-  const REPLACER = "blues-stack-template";
+  const REPLACER = "indie-stack-template";
 
   const DIR_NAME = path.basename(rootDirectory);
   const SUFFIX = getRandomString(2);
