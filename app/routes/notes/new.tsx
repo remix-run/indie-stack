@@ -40,7 +40,7 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 export default function NewNotePage() {
-  const actionData = useActionData<ActionData>();
+  const actionData = useActionData() as ActionData;
   const titleRef = React.useRef<HTMLInputElement>(null);
   const bodyRef = React.useRef<HTMLTextAreaElement>(null);
 

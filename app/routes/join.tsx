@@ -81,7 +81,7 @@ export const meta: MetaFunction = () => {
 export default function Join() {
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") ?? undefined;
-  const actionData = useActionData<ActionData>();
+  const actionData = useActionData() as ActionData;
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
 

@@ -32,7 +32,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 };
 
 export default function NoteDetailsPage() {
-  const data = useLoaderData<LoaderData>();
+  const data = useLoaderData() as LoaderData;
 
   return (
     <div>
