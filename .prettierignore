@@ -2,5 +2,5 @@
 /.cache
 /build
 /public/build
-/postgres-data
 .env
+/app/styles/tailwind.css
