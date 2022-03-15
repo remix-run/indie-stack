@@ -48,11 +48,6 @@ export async function requireUserId(
   return userId;
 }
 
-export async function requireUser(request: Request) {
-  const userId = await requireUserId(request);
-  return getUserById(userId);
-}
-
 export async function createUserSession({
   request,
   userId,

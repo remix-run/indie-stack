@@ -27,10 +27,6 @@ export async function createUser(email: string, password: string) {
   return user;
 }
 
-export async function deleteUserByEmail(email: string) {
-  return prisma.user.delete({ where: { email } });
-}
-
 export async function verifyLogin(email: string, password: string) {
   const userWithPassword = await prisma.user.findUnique({
     where: { email },
