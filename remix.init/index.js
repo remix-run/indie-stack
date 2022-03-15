@@ -1,4 +1,5 @@
 const fs = require("fs/promises");
+const { execSync } = require("child_process");
 const path = require("path");
 const crypto = require("crypto");
 const toml = require("@iarna/toml");
@@ -48,6 +49,19 @@ async function main({ rootDirectory }) {
     fs.writeFile(README_PATH, newReadme),
     fs.writeFile(ENV_PATH, newEnv),
   ]);
+
+  console.log(`1️⃣ Setting up the database`);
+  execSync(`npx prisma migrate deploy`, { stdio: "inherit" });
+
+  // seed the database
+  console.log("2️⃣ Putting some test data into the database.");
+  execSync(`npx prisma db seed`, { stdio: "inherit" });
+
+  // get the build ready
+  console.log("3️⃣ Running the build to verify things are working");
+  execSync(`npm run build`, { stdio: "inherit" });
+
+  console.log(`✅ Project is ready! Start development with "npm run dev"`);
 }
 
 module.exports = main;

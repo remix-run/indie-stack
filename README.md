@@ -20,41 +20,9 @@ Learn more about [Remix Stacks](https://remix.run/stacks).
 
 Not a fan of bits of the stack? Fork it, change it, and use `npx create-remix --template your/repo`! Make it your own.
 
-## Fly Setup
-
-1. [Install Fly](https://fly.io/docs/getting-started/installing-flyctl/)
-
-2. Sign up and log in to Fly
-
-```sh
-fly auth signup
-```
-
-## The Database
-
-To get the database started, run this:
-
-```sh
-npx prisma migrate deploy
-```
-
-When this finishes successfully, it will say:
-
-> All migrations have been successfully applied.
-
-## Build
-
-To run the production build for the app, run the following script:
-
-```sh
-npm run build
-```
-
-This should take less than a second ⚡
-
 ## Development
 
-With your sqlite database setup with tables for your data model via prisma, you're ready to start the dev server. Run this in a new tab in your terminal:
+When you generated this project, it should have initialized the prisma database for you. With your sqlite database setup with tables for your data model via prisma, you're ready to start the dev server:
 
 ```sh
 npm run dev
@@ -62,9 +30,9 @@ npm run dev
 
 This starts your app in development mode, rebuilding assets on file changes.
 
-This is a pretty simple note-taking app, but it's a good example of how you can build a full stack app with Prisma and Remix. The main functionality is creating users, logging in and out, and creating and deleting notes.
-
 ### Relevant code:
+
+This is a pretty simple note-taking app, but it's a good example of how you can build a full stack app with Prisma and Remix. The main functionality is creating users, logging in and out, and creating and deleting notes.
 
 - creating users, and logging in and out [./app/models/user.server.ts](./app/models/user.server.ts)
 - user sessions, and verifying them [./app/session.server.ts](./app/session.server.ts)
@@ -76,7 +44,13 @@ This Remix Stack comes with two GitHub actions that handle automatically deployi
 
 Prior to your first deployment, you'll need to do a few thing:
 
-- Create a new [GitHub Repository](https://repo.new)
+- [Install Fly](https://fly.io/docs/getting-started/installing-flyctl/)
+
+- Sign up and log in to Fly
+
+  ```sh
+  fly auth signup
+  ```
 
 - Create two apps on Fly, one for staging and one for production:
 
@@ -85,7 +59,11 @@ Prior to your first deployment, you'll need to do a few thing:
   fly create indie-stack-template-staging
   ```
 
-- Make sure you have a `FLY_API_TOKEN` added to your GitHub repo, to do this, go to your user settings on Fly and create a new [token](https://web.fly.io/user/personal_access_tokens/new), then add it to [your repo secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) with the name `FLY_API_TOKEN`. Finally you'll need to add a `SESSION_SECRET` to your fly app secrets, to do this you can run the following commands:
+- Create a new [GitHub Repository](https://repo.new)
+
+- Add a `FLY_API_TOKEN` to your GitHub repo. To do this, go to your user settings on Fly and create a new [token](https://web.fly.io/user/personal_access_tokens/new), then add it to [your repo secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) with the name `FLY_API_TOKEN`.
+
+- Add a `SESSION_SECRET` to your fly app secrets, to do this you can run the following commands:
 
   ```sh
   fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app indie-stack-template
