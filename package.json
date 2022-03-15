@@ -1,29 +1,27 @@
 {
-  "private": true,
   "name": "remix-app-template",
+  "private": true,
   "description": "",
   "license": "",
-  "prisma": {
-    "seed": "node --require esbuild-register prisma/seed.ts"
-  },
+  "sideEffects": false,
   "scripts": {
-    "postinstall": "remix setup node",
-    "build": "npm run build:css && npm run build:remix",
-    "build:remix": "remix build",
+    "build": "run-s build:*",
     "build:css": "npm run generate:css -- --minify",
+    "build:remix": "cross-env NODE_ENV=production remix build",
     "dev": "run-p dev:*",
-    "dev:remix": "node --require dotenv/config --require ./mocks ./node_modules/.bin/remix dev",
-    "dev:tailwind": "npm run generate:css -- --watch",
-    "generate:css": "tailwindcss -o ./app/styles/tailwind.css",
-    "start": "remix-serve build",
+    "dev:css": "npm run generate:css -- --watch",
+    "dev:remix": "cross-env NODE_ENV=development node --require ./mocks ./node_modules/.bin/remix dev",
     "docker": "docker-compose up -d",
     "format": "prettier --write .",
+    "generate:css": "tailwindcss -o ./app/styles/tailwind.css",
+    "postinstall": "remix setup node",
     "lint": "eslint --cache-location ./node_modules/.cache/eslint .",
-    "typecheck": "tsc -b && tsc -b cypress",
+    "start": "cross-env NODE_ENV=production remix-serve build",
+    "start:mocks": "cross-env NODE_ENV=production node --require ./mocks ./node_modules/.bin/remix-serve build",
     "test": "vitest",
-    "start:mocks": "cross-env NODE_ENV=production node --require ./mocks --require dotenv/config ./node_modules/.bin/remix-serve build",
     "test:e2e:dev": "start-server-and-test dev http://localhost:3000 'cypress open'",
-    "test:e2e:run": "cross-env PORT=8811 start-server-and-test start:mocks http://localhost:8811 'cypress run'"
+    "test:e2e:run": "cross-env PORT=8811 start-server-and-test start:mocks http://localhost:8811 'cypress run'",
+    "typecheck": "tsc -b && tsc -b cypress"
   },
   "dependencies": {
     "@node-rs/bcrypt": "^1.6.0",
@@ -31,6 +29,7 @@
     "@reach/alert": "^0.16.0",
     "@remix-run/react": "*",
     "@remix-run/serve": "*",
+    "cross-env": "^7.0.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "remix": "*",
@@ -49,15 +48,10 @@
     "@types/react-dom": "^17.0.13",
     "@vitejs/plugin-react": "^1.2.0",
     "c8": "^7.11.0",
-    "cross-env": "^7.0.3",
     "cypress": "^9.5.2",
-    "dotenv": "^16.0.0",
     "esbuild-register": "^3.3.2",
     "eslint": "^8.11.0",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-jest": "^26.1.1",
-    "eslint-plugin-jest-dom": "^4.0.1",
-    "eslint-plugin-testing-library": "^5.1.0",
     "happy-dom": "^2.47.2",
     "msw": "^0.39.2",
     "npm-run-all": "^4.1.5",
@@ -73,11 +67,13 @@
   "engines": {
     "node": ">=14"
   },
-  "sideEffects": false,
-  "prettier": {},
   "eslintIgnore": [
     "/node_modules",
     "/build",
     "/public/build"
-  ]
+  ],
+  "prisma": {
+    "seed": "node --require esbuild-register prisma/seed.ts"
+  },
+  "prettier": {}
 }
