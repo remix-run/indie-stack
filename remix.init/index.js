@@ -51,11 +51,11 @@ async function main({ rootDirectory }) {
   ]);
 
   console.log(`1️⃣ Setting up the database`);
-  execSync(`npx prisma migrate deploy`, { stdio: "inherit" });
+  execSync(`npm run db:deploy`, { stdio: "inherit" });
 
   // seed the database
   console.log("2️⃣ Putting some test data into the database.");
-  execSync(`npx prisma db seed`, { stdio: "inherit" });
+  execSync(`npm run db:seed`, { stdio: "inherit" });
 
   // get the build ready
   console.log("3️⃣ Running the build to verify things are working");
