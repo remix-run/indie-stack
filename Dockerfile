@@ -50,5 +50,4 @@ COPY --from=build /myapp/build /myapp/build
 COPY --from=build /myapp/public /myapp/public
 ADD . .
 
-RUN npx prisma migrate deploy
 CMD ["npm", "start"]
