@@ -72,8 +72,8 @@
     "/build",
     "/public/build"
   ],
+  "prettier": {},
   "prisma": {
     "seed": "node --require esbuild-register prisma/seed.ts"
-  },
-  "prettier": {}
+  }
 }
