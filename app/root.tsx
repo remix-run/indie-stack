@@ -27,7 +27,7 @@ type LoaderData = {
   user: Awaited<ReturnType<typeof getUser>>;
 };
 
-export let loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async ({ request }) => {
   return json<LoaderData>({
     user: await getUser(request),
   });
