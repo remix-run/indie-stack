@@ -51,12 +51,13 @@ export default function Index() {
                   </div>
                 )}
               </div>
-
-              <img
-                src="https://user-images.githubusercontent.com/1500684/158298926-e45dafff-3544-4b69-96d6-d3bcc33fc76a.svg"
-                alt="Remix"
-                className="mx-auto mt-16 w-full max-w-[12rem] md:max-w-[16rem]"
-              />
+              <a href="https://remix.run">
+                <img
+                  src="https://user-images.githubusercontent.com/1500684/158298926-e45dafff-3544-4b69-96d6-d3bcc33fc76a.svg"
+                  alt="Remix"
+                  className="mx-auto mt-16 w-full max-w-[12rem] md:max-w-[16rem]"
+                />
+              </a>
             </div>
           </div>
         </div>
