@@ -8,8 +8,6 @@
     "build": "run-s build:*",
     "build:css": "npm run generate:css -- --minify",
     "build:remix": "cross-env NODE_ENV=production remix build",
-    "db:deploy": "prisma migrate deploy",
-    "db:seed": "prisma db seed",
     "dev": "run-p dev:*",
     "dev:css": "npm run generate:css -- --watch",
     "dev:remix": "cross-env NODE_ENV=development node --require ./mocks ./node_modules/.bin/remix dev",
