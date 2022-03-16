@@ -1,5 +1,7 @@
 # Remix Indie Stack
 
+![The Remix Indie Stack](https://repository-images.githubusercontent.com/465928257/a241fa49-bd4d-485a-a2a5-5cb8e4ee0abf)
+
 Learn more about [Remix Stacks](https://remix.run/stacks).
 
 ## What's in the stack
@@ -22,13 +24,23 @@ Not a fan of bits of the stack? Fork it, change it, and use `npx create-remix --
 
 ## Development
 
-When you generated this project, it should have initialized the prisma database for you. With your sqlite database setup with tables for your data model via prisma, you're ready to start the dev server:
+- Initial setup: _If you just generated this project, this step has been done for you._
 
-```sh
-npm run dev
-```
+  ```sh
+  npm run setup
+  ```
+
+- Start dev server:
+  ```sh
+  npm run dev
+  ```
 
 This starts your app in development mode, rebuilding assets on file changes.
+
+The database seed script creates a new user with some data you can use to get started:
+
+- Email: `rachel@remix.run`
+- Password: `rachelrox`
 
 ### Relevant code:
 

@@ -26,6 +26,12 @@
     "test:e2e:run": "cross-env PORT=8811 start-server-and-test start:mocks http://localhost:8811 'cypress run'",
     "typecheck": "tsc -b && tsc -b cypress"
   },
+  "prettier": {},
+  "eslintIgnore": [
+    "/node_modules",
+    "/build",
+    "/public/build"
+  ],
   "dependencies": {
     "@node-rs/bcrypt": "^1.6.0",
     "@prisma/client": "^3.11.0",
@@ -70,12 +76,6 @@
   "engines": {
     "node": ">=14"
   },
-  "eslintIgnore": [
-    "/node_modules",
-    "/build",
-    "/public/build"
-  ],
-  "prettier": {},
   "prisma": {
     "seed": "node --require esbuild-register prisma/seed.ts"
   }
