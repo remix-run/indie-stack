@@ -91,11 +91,14 @@ jobs:
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
 
-      - name: ⚙️ Build
-        run: npm run build
-
       - name: 🛠 Setup Database
         run: npx prisma migrate reset --force
+
+      - name: 🌱 Seed the Database
+        run: npx prisma db seed
+
+      - name: ⚙️ Build
+        run: npm run build
 
       - name: 🌳 Cypress run
         uses: cypress-io/github-action@v3

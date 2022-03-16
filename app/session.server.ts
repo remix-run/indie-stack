@@ -34,7 +34,11 @@ export async function getUserId(request: Request): Promise<string | undefined> {
 export async function getUser(request: Request): Promise<null | User> {
   const userId = await getUserId(request);
   if (userId === undefined) return null;
-  return getUserById(userId);
+
+  const user = await getUserById(userId);
+  if (user) return user;
+
+  throw await logout(request);
 }
 
 export async function requireUserId(
@@ -51,7 +55,11 @@ export async function requireUserId(
 
 export async function requireUser(request: Request) {
   const userId = await requireUserId(request);
-  return getUserById(userId);
+
+  const user = await getUserById(userId);
+  if (user) return user;
+
+  throw await logout(request);
 }
 
 export async function createUserSession({

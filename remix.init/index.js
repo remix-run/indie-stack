@@ -50,12 +50,10 @@ async function main({ rootDirectory }) {
     fs.writeFile(ENV_PATH, newEnv),
   ]);
 
-  console.log(`1️⃣  Setting up the database`);
-  execSync(`npx prisma migrate dev`, { stdio: "inherit", cwd: rootDirectory });
-
-  // get the build ready
-  console.log("2️⃣  Running the build to verify things are working");
-  execSync(`npm run build`, { stdio: "inherit", cwd: rootDirectory });
+  console.log(
+    `Running the setup script to make sure everything was set up properly`
+  );
+  execSync(`npm run setup`, { stdio: "inherit", cwd: rootDirectory });
 
   console.log(`✅  Project is ready! Start development with "npm run dev"`);
 }
