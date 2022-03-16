@@ -16,7 +16,7 @@ Learn more about [Remix Stacks](https://remix.run/stacks).
 - End-to-end testing with [Cypress](https://cypress.io)
 - Local third party request mocking with [MSW](https://mswjs.io)
 - Unit testing with [Vitest](https://vitest.dev) and [Testing Library](https://testing-library.com)
-- Code formatting with [prettier](https://prettier.io)
+- Code formatting with [Prettier](https://prettier.io)
 - Linting with [ESLint](https://eslint.org)
 - Static Types with [TypeScript](https://typescriptlang.org)
 
@@ -31,6 +31,7 @@ Not a fan of bits of the stack? Fork it, change it, and use `npx create-remix --
   ```
 
 - Start dev server:
+
   ```sh
   npm run dev
   ```
@@ -52,9 +53,9 @@ This is a pretty simple note-taking app, but it's a good example of how you can 
 
 ## Deployment
 
-This Remix Stack comes with two GitHub actions that handle automatically deploying your app to production and staging environments.
+This Remix Stack comes with two GitHub Actions that handle automatically deploying your app to production and staging environments.
 
-Prior to your first deployment, you'll need to do a few thing:
+Prior to your first deployment, you'll need to do a few things:
 
 - [Install Fly](https://fly.io/docs/getting-started/installing-flyctl/)
 
@@ -138,4 +139,4 @@ This project uses ESLint for linting. That is configured in `.eslintrc.js`.
 
 ### Formatting
 
-We use [prettier](https://prettier.io/) for auto-formatting in this project. It's recommended to install an editor plugin (like the [VSCode prettier plugin](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)) to get auto-formatting on save. There's also a `npm run format` script you can run to format all files in the project.
+We use [Prettier](https://prettier.io/) for auto-formatting in this project. It's recommended to install an editor plugin (like the [VSCode Prettier plugin](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)) to get auto-formatting on save. There's also a `npm run format` script you can run to format all files in the project.
