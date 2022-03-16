@@ -1,5 +1,5 @@
 {
-  "name": "remix-app-template",
+  "name": "indie-stack-template",
   "private": true,
   "description": "",
   "license": "",
@@ -16,8 +16,8 @@
     "postinstall": "remix setup node",
     "lint": "eslint --cache-location ./node_modules/.cache/eslint .",
     "setup": "run-s setup:db setup:app",
-    "setup:db": "prisma migrate dev",
     "setup:app": "run-p \"test -- --run\" lint typecheck test:e2e:run",
+    "setup:db": "prisma migrate dev",
     "start": "cross-env NODE_ENV=production remix-serve build",
     "start:mocks": "cross-env NODE_ENV=production node --require ./mocks ./node_modules/.bin/remix-serve build",
     "test": "vitest",
