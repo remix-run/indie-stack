@@ -65,7 +65,7 @@ async function main({ rootDirectory }) {
 
   execSync(`npm run setup`, { stdio: "inherit", cwd: rootDirectory });
 
-  await setup({ rootDirectory }).catch((error) => {
+  await askSetupQuestions({ rootDirectory }).catch((error) => {
     if (error.isTtyError) {
       // Prompt couldn't be rendered in the current environment
     } else {
@@ -74,7 +74,7 @@ async function main({ rootDirectory }) {
   });
 }
 
-async function setup({ rootDirectory }) {
+async function askSetupQuestions({ rootDirectory }) {
   const answers = await inquirer.prompt([
     {
       name: "validate",
