@@ -14,7 +14,7 @@
     "format": "prettier --write .",
     "generate:css": "tailwindcss -o ./app/styles/tailwind.css",
     "postinstall": "remix setup node",
-    "lint": "eslint --cache-location ./node_modules/.cache/eslint .",
+    "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "setup": "run-s setup:db setup:app",
     "setup:app": "run-p \"test -- --run\" lint typecheck test:e2e:run",
     "setup:db": "prisma migrate dev",
