@@ -2,6 +2,7 @@ const { execSync } = require("child_process");
 const crypto = require("crypto");
 const fs = require("fs/promises");
 const path = require("path");
+const inquirer = require("inquirer");
 
 const toml = require("@iarna/toml");
 const sort = require("sort-package-json");
@@ -62,12 +63,38 @@ async function main({ rootDirectory }) {
     fs.writeFile(PACKAGE_JSON_PATH, newPackageJson),
   ]);
 
-  console.log(
-    `Running the setup script to make sure everything was set up properly`
-  );
-  execSync(`npm run setup`, { stdio: "inherit", cwd: rootDirectory });
+  await setup({ rootDirectory });
+}
 
-  console.log(`✅  Project is ready! Start development with "npm run dev"`);
+async function setup({ rootDirectory }) {
+  const answers = await inquirer
+    .prompt([
+      {
+        name: "setup",
+        type: "confirm",
+        default: false,
+        message:
+          "Do you want to run the build/tests/etc to verify things are setup properly?",
+      },
+    ])
+    .catch((error) => {
+      if (error.isTtyError) {
+        // Prompt couldn't be rendered in the current environment
+      } else {
+        throw error;
+      }
+    });
+
+  if (answers.setup) {
+    console.log(
+      `Running the setup script to make sure everything was set up properly`
+    );
+    execSync(`npm run setup`, { stdio: "inherit", cwd: rootDirectory });
+
+    console.log(`✅  Project is ready! Start development with "npm run dev"`);
+  } else {
+    console.log(`✅  Sounds good. Check the README.md for setup instructions.`);
+  }
 }
 
 module.exports = main;
