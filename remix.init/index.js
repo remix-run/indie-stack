@@ -63,38 +63,35 @@ async function main({ rootDirectory }) {
     fs.writeFile(PACKAGE_JSON_PATH, newPackageJson),
   ]);
 
-  await setup({ rootDirectory });
+  execSync(`npm run setup`, { stdio: "inherit", cwd: rootDirectory });
+
+  await setup({ rootDirectory }).catch((error) => {
+    if (error.isTtyError) {
+      // Prompt couldn't be rendered in the current environment
+    } else {
+      throw error;
+    }
+  });
 }
 
 async function setup({ rootDirectory }) {
-  const answers = await inquirer
-    .prompt([
-      {
-        name: "setup",
-        type: "confirm",
-        default: false,
-        message:
-          "Do you want to run the build/tests/etc to verify things are setup properly?",
-      },
-    ])
-    .catch((error) => {
-      if (error.isTtyError) {
-        // Prompt couldn't be rendered in the current environment
-      } else {
-        throw error;
-      }
-    });
+  const answers = await inquirer.prompt([
+    {
+      name: "validate",
+      type: "confirm",
+      default: false,
+      message:
+        "Do you want to run the build/tests/etc to verify things are setup properly?",
+    },
+  ]);
 
-  if (answers.setup) {
+  if (answers.validate) {
     console.log(
-      `Running the setup script to make sure everything was set up properly`
+      `Running the validate script to make sure everything was set up properly`
     );
-    execSync(`npm run setup`, { stdio: "inherit", cwd: rootDirectory });
-
-    console.log(`✅  Project is ready! Start development with "npm run dev"`);
-  } else {
-    console.log(`✅  Sounds good. Check the README.md for setup instructions.`);
+    execSync(`npm run validate`, { stdio: "inherit", cwd: rootDirectory });
   }
+  console.log(`✅  Project is ready! Start development with "npm run dev"`);
 }
 
 module.exports = main;
