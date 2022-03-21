@@ -11,7 +11,7 @@ async function seed() {
     // no worries if it doesn't exist yet
   });
 
-  const hashedPassword = await bcrypt.hash("rachelrox", 10);
+  const hashedPassword = await bcrypt.hash("racheliscool", 10);
 
   const user = await prisma.user.create({
     data: {
