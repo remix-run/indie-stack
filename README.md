@@ -40,8 +40,6 @@ Not a fan of bits of the stack? Fork it, change it, and use `npx create-remix --
   npm run dev
   ```
 
-  > **Note:** You may see a nasty error in the PM2 logs when you initially run the dev script. This should only appear once and will not affect your local app server. We are working on improving this!
-
 This starts your app in development mode, rebuilding assets on file changes.
 
 The database seed script creates a new user with some data you can use to get started:
@@ -79,8 +77,6 @@ Prior to your first deployment, you'll need to do a few things:
   fly create indie-stack-template
   fly create indie-stack-template-staging
   ```
-
-  > **Note:** If you choose a name other than `indie-stack-template`, please note that it must not include spaces. Fly will generate a domain based on the app name you choose at this step.
 
   - Initialize Git.
 
