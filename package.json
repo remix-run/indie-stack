@@ -15,7 +15,7 @@
     "generate:css": "tailwindcss -o ./app/styles/tailwind.css",
     "postinstall": "remix setup node",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
-    "setup": "prisma migrate dev",
+    "setup": "prisma migrate dev && prisma db seed",
     "start": "remix-serve build",
     "start:mocks": "node --require ./mocks ./node_modules/.bin/remix-serve build",
     "test": "vitest",

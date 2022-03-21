@@ -34,12 +34,6 @@ Not a fan of bits of the stack? Fork it, change it, and use `npx create-remix --
   npm run setup
   ```
 
-- Validate the app has been set up properly (optional):
-
-  ```sh
-  npm run validate
-  ```
-
 - Start dev server:
 
   ```sh
@@ -75,6 +69,8 @@ Prior to your first deployment, you'll need to do a few things:
   fly auth signup
   ```
 
+  > **Note:** If you have more than one Fly account, ensure that you are signed into the same account in the Fly CLI as you are in the browser. In your terminal, run `fly auth whoami` and ensure the email matches the Fly account signed into the browser.
+
 - Create two apps on Fly, one for staging and one for production:
 
   ```sh
@@ -82,7 +78,17 @@ Prior to your first deployment, you'll need to do a few things:
   fly create indie-stack-template-staging
   ```
 
-- Create a new [GitHub Repository](https://repo.new)
+  - Initialize Git.
+
+  ```sh
+  git init
+  ```
+
+- Create a new [GitHub Repository](https://repo.new), and then add it as the remote for your project. **Do not push your app yet!**
+
+  ```sh
+  git remote add origin <ORIGIN_URL>
+  ```
 
 - Add a `FLY_API_TOKEN` to your GitHub repo. To do this, go to your user settings on Fly and create a new [token](https://web.fly.io/user/personal_access_tokens/new), then add it to [your repo secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) with the name `FLY_API_TOKEN`.
 
