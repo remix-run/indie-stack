@@ -27,7 +27,10 @@ async function main({ rootDirectory }) {
 
   const DIR_NAME = path.basename(rootDirectory);
   const SUFFIX = getRandomString(2);
-  const APP_NAME = DIR_NAME + "-" + SUFFIX;
+
+  const APP_NAME = (DIR_NAME + "-" + SUFFIX)
+    // get rid of anything that's not allowed in an app name
+    .replace(/[^a-zA-Z0-9-_]/g, "-");
 
   const [prodContent, readme, env, packageJson] = await Promise.all([
     fs.readFile(FLY_TOML_PATH, "utf-8"),
