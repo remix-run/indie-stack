@@ -1,2 +1,2 @@
-require("esbuild-register/dist/node").register();
+require("ts-node").register({ transpileOnly: true });
 require("./start");
