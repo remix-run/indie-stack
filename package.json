@@ -69,6 +69,7 @@
     "start-server-and-test": "^1.14.0",
     "tailwindcss": "^3.0.23",
     "ts-node": "^10.7.0",
+    "tsconfig-paths": "^3.14.1",
     "typescript": "^4.6.2",
     "vite-tsconfig-paths": "^3.4.1",
     "vitest": "^0.7.10"
@@ -77,6 +78,6 @@
     "node": ">=14"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "ts-node --require tsconfig-paths/register prisma/seed.ts"
   }
 }
