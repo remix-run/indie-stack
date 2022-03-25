@@ -137,7 +137,7 @@ export default function LoginPage() {
                 ref={passwordRef}
                 name="password"
                 type="password"
-                autoComplete="new-password"
+                autoComplete="current-password"
                 aria-invalid={actionData?.errors?.password ? true : undefined}
                 aria-describedby="password-error"
                 className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
