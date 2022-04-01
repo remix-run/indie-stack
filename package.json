@@ -13,7 +13,6 @@
     "dev:remix": "cross-env NODE_ENV=development binode --require ./mocks -- @remix-run/dev:remix dev",
     "format": "prettier --write .",
     "generate:css": "tailwindcss -o ./app/styles/tailwind.css",
-    "postinstall": "remix setup node",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "setup": "prisma migrate dev && prisma db seed",
     "start": "remix-serve build",
@@ -33,13 +32,13 @@
   ],
   "dependencies": {
     "@prisma/client": "^3.11.1",
+    "@remix-run/node": "*",
     "@remix-run/react": "*",
     "@remix-run/serve": "*",
     "@remix-run/server-runtime": "*",
     "bcryptjs": "^2.4.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "remix": "*",
     "tiny-invariant": "^1.2.0"
   },
   "devDependencies": {
