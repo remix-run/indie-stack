@@ -1,0 +1,42 @@
+# Setup production node_modules
+FROM mrkurt/remix-indie-stack:20230401 as production-deps
+
+WORKDIR /myapp
+
+ADD package.json package-lock.json ./
+RUN npm prune --production
+
+# Build the app
+FROM mrkurt/remix-indie-stack:20230401 as build
+
+WORKDIR /myapp
+
+ADD package.json package-lock.json ./
+RUN npm install --production=false
+
+ADD prisma .
+RUN npx prisma generate
+
+ADD . .
+RUN npm run postinstall
+RUN npm run build
+
+# Finally, build the production image with minimal footprint
+FROM node:16-bullseye-slim
+
+# set for base and all layer that inherit from it
+ENV NODE_ENV production
+
+# Install openssl for Prisma
+RUN apt-get update && apt-get install -y openssl
+
+WORKDIR /myapp
+
+COPY --from=production-deps /myapp/node_modules /myapp/node_modules
+COPY --from=build /myapp/node_modules/.prisma /myapp/node_modules/.prisma
+
+COPY --from=build /myapp/build /myapp/build
+COPY --from=build /myapp/public /myapp/public
+ADD . .
+
+CMD ["npm", "start"]

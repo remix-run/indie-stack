@@ -37,6 +37,7 @@
     "@remix-run/serve": "*",
     "@remix-run/server-runtime": "*",
     "bcryptjs": "^2.4.3",
+    "lru-cache": "^6.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "remix": "*",
