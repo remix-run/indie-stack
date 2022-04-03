@@ -38,12 +38,18 @@ ADD . .
 RUN npm run postinstall
 RUN npm run build
 
+# Add Litestream stage (https://github.com/fly-apps/litestream-base)
+FROM flyio/litestream-base:20220402 as litestream
+
 # Finally, build the production image with minimal footprint
 FROM base
 
 ENV DATABASE_URL=file:/data/sqlite.db
 ENV PORT = "8080"
 ENV NODE_ENV = "production"
+
+# Copy Litestream setup into build stage
+COPY --from=litestream /litestream /litestream
 
 # add shortcut for connecting to database CLI
 RUN echo "#!/bin/sh\nset -x\nsqlite3 \$DATABASE_URL" > /usr/local/bin/database-cli && chmod +x /usr/local/bin/database-cli
@@ -57,4 +63,5 @@ COPY --from=build /myapp/build /myapp/build
 COPY --from=build /myapp/public /myapp/public
 ADD . .
 
-CMD ["npm", "start"]
+# Run with Litestream
+CMD [ "/litestream/start.sh", "npm start"]

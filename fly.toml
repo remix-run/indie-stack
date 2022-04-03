@@ -10,6 +10,9 @@ processes = []
   cmd = "start.sh"
   entrypoint = "sh"
 
+[env]
+FLY_PRIMARY_REGION="ord" #for litestream
+
 [mounts]
   source = "data"
   destination = "/data"
