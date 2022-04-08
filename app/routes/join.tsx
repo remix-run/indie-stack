@@ -38,7 +38,7 @@ export const action: ActionFunction = async ({ request }) => {
     );
   }
 
-  if (typeof password !== "string") {
+  if (typeof password !== "string" || password.length === 0) {
     return json<ActionData>(
       { errors: { password: "Password is required" } },
       { status: 400 }
