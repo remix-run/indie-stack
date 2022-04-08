@@ -5,7 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "@iarna/toml": "^2.2.5",
-    "inquirer": "^8.2.2",
-    "sort-package-json": "^1.55.0"
+    "inquirer": "^8.2.4",
+    "sort-package-json": "^1.57.0"
   }
 }
