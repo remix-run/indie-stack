@@ -1,3 +1,4 @@
 FROM gitpod/workspace-full
 
-RUN brew install flyctl
+# Install Fly
+RUN curl -L https://fly.io/install.sh | sh
