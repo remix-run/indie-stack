@@ -3,7 +3,20 @@
 image:
   file: .gitpod.Dockerfile
 
+ports:
+  - port: 3000
+    onOpen: notify
+
 tasks:
+  - name: Restore .env file
+    command: |
+      if [ -n "${ENV}" ]; then
+        # restore the .env file from gitpod user's env vars
+        echo "${ENV}" | tee .env > /dev/null
+        eval $(gp env -e ENV="$(base64 .env | tr -d '\n')")
+        echo "${ENV}" | base64 -d | tee .env > /dev/null
+      fi
+
   - init: npm install && npm run setup
     command: npm run dev
 
