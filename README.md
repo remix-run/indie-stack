@@ -26,7 +26,14 @@ npx create-remix --template remix-run/indie-stack
 
 Not a fan of bits of the stack? Fork it, change it, and use `npx create-remix --template your/repo`! Make it your own.
 
+## Quickstart
+
+Click this button to create a Gitpod workspace with the project set up and Fly pre-installed
+
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/from-referrer/)
+
 ## Development
+
 
 - Initial setup: _If you just generated this project, this step has been done for you._
 
