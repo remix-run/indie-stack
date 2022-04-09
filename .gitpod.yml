@@ -6,3 +6,16 @@ image:
 tasks:
   - init: npm install && npm run setup
     command: npm run dev
+
+vscode:
+  extensions:
+    - ms-azuretools.vscode-docker
+    - esbenp.prettier-vscode
+    - dbaeumer.vscode-eslint
+    - eamodio.gitlens
+    - bradlc.vscode-tailwindcss
+    - oderwat.indent-rainbow
+    - wix.vscode-import-cost
+    - christian-kohler.npm-intellisense
+    - christian-kohler.path-intellisense
+    - csstools.postcss
