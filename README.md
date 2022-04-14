@@ -34,7 +34,6 @@ Click this button to create a [Gitpod](https://gitpod.io) workspace with the pro
 
 ## Development
 
-
 - Initial setup: _If you just generated this project, this step has been done for you._
 
   ```sh
