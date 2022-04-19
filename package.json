@@ -48,10 +48,10 @@
     "@testing-library/dom": "^8.16.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
-    "@testing-library/user-event": "^14.2.3",
+    "@testing-library/user-event": "^14.2.5",
     "@types/bcryptjs": "^2.4.2",
     "@types/eslint": "^8.4.5",
-    "@types/node": "^18.0.4",
+    "@types/node": "^18.0.5",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^2.0.0",
@@ -76,12 +76,12 @@
     "typescript": "^4.7.4",
     "vite": "^3.0.0",
     "vite-tsconfig-paths": "^3.5.0",
-    "vitest": "^0.18.0"
+    "vitest": "^0.18.1"
   },
   "engines": {
     "node": ">=14"
   },
   "prisma": {
-    "seed": "node --require tsconfig-paths/register prisma/seed.js"
+    "seed": "ts-node --require tsconfig-paths/register prisma/seed.ts"
   }
 }
