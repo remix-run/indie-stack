@@ -1,11 +1,11 @@
-import { setupServer } from "msw/node";
+import { setupServer } from 'msw/node'
 
-import "~/utils";
+import '~/utils'
 
-const server = setupServer();
+const server = setupServer()
 
-server.listen({ onUnhandledRequest: "bypass" });
-console.info("🔶 Mock server running");
+server.listen({ onUnhandledRequest: 'bypass' })
+console.info('🔶 Mock server running')
 
-process.once("SIGINT", () => server.close());
-process.once("SIGTERM", () => server.close());
+process.once('SIGINT', () => server.close())
+process.once('SIGTERM', () => server.close())
