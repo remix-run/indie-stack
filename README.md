@@ -107,11 +107,11 @@ Prior to your first deployment, you'll need to do a few things:
 
   If you don't have openssl installed, you can also use [1password](https://1password.com/generate-password) to generate a random secret, just replace `$(openssl rand -hex 32)` with the generated secret.
 
-- Create a persistent volume for the sqlite database for both your staging and production environments. Run the following:
+- Create a persistent volume for the sqlite database for both your staging and production environments. Run the following, replacing `<region>` with a [Fly.io region ID](https://fly.io/docs/reference/regions/):
 
   ```sh
-  fly volumes create data --size 1 --app indie-stack-template
-  fly volumes create data --size 1 --app indie-stack-template-staging
+  fly volumes create data --size 1 --app indie-stack-template --region <region>
+  fly volumes create data --size 1 --app indie-stack-template-staging --region <region>
   ```
 
 Now that everything is set up you can commit and push your changes to your repo. Every commit to your `main` branch will trigger a deployment to your production environment, and every commit to your `dev` branch will trigger a deployment to your staging environment.
