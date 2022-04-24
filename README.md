@@ -1,6 +1,6 @@
 # Remix Rockabilly Stack
 
-![The Remix Rockabilly Stack](https://github.com/jbstewart/public-images-2782/blob/main/RockabillyStack.jpg?raw=true)
+![The Remix Rockabilly Stack](https://github.com/jbstewart/public-images-2782/blob/main/RockabillyStack-App.png?raw=true)
 ## ⚠️ This repo is currently just a clone of the Remix Indie stack! ## 
 ### Eventually it will feature a Postgres database instead of SQLite, with a few additional enhancements
 
