@@ -2,20 +2,16 @@
 
 ![The Remix Rockabilly Stack](https://github.com/jbstewart/public-images-2782/blob/main/RockabillyStack-App.png?raw=true)
 
-## ⚠️ This repo is currently just a clone of the Remix Indie stack!
-
-### Eventually it will feature a Postgres database instead of SQLite, with a few additional enhancements
-
 Learn more about [Remix Stacks](https://remix.run/stacks).
 
 ```
-npx create-remix --template remix-run/indie-stack
+npx create-remix --template jbstewart/rockabilly-stack
 ```
 
 ## What's in the stack
 
 -   [Fly app deployment](https://fly.io) with [Docker](https://www.docker.com/)
--   Production-ready [SQLite Database](https://sqlite.org)
+-   Production-ready [PostgreSQL Database](https://www.postgresql.org/)
 -   Healthcheck endpoint for [Fly backups region fallbacks](https://fly.io/docs/reference/configuration/#services-http_checks)
 -   [GitHub Actions](https://github.com/features/actions) for deploy on merge to production and staging environments
 -   Email/Password Authentication with [cookie-based sessions](https://remix.run/docs/en/v1/api/remix#createcookiesessionstorage)
@@ -84,8 +80,8 @@ Prior to your first deployment, you'll need to do a few things:
 -   Create two apps on Fly, one for staging and one for production:
 
     ```sh
-    fly create indie-stack-template
-    fly create indie-stack-template-staging
+    fly create rockabilly-stack-template
+    fly create rockabilly-stack-template-staging
     ```
 
     -   Initialize Git.
@@ -105,24 +101,35 @@ Prior to your first deployment, you'll need to do a few things:
 -   Add a `SESSION_SECRET` to your fly app secrets, to do this you can run the following commands:
 
     ```sh
-    fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app indie-stack-template
-    fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app indie-stack-template-staging
+    fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app rockabilly-stack-template
+    fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app rockabilly-stack-template-staging
     ```
 
     If you don't have openssl installed, you can also use [1password](https://1password.com/generate-password) to generate a random secret, just replace `$(openssl rand -hex 32)` with the generated secret.
 
--   Create a persistent volume for the sqlite database for both your staging and production environments. Run the following:
+
+-   Create a single Postgres server and attach it to both production and staging apps:
 
     ```sh
-    fly volumes create data --size 1 --app indie-stack-template
-    fly volumes create data --size 1 --app indie-stack-template-staging
+    fly postgres create --name rockabilly-stack-template-db
+    fly postgres attach --postgres-app rockabilly-stack-template-db --app rockabilly-stack-template
+    fly postgres attach --postgres-app rockabilly-stack-template-db --app rockabilly-stack-template-staging
     ```
+    
+    This approach allows you to fit a full deployment with production and staging versions of the app and a postgres 
+    database into the free tier of fly.io. A more conventional setup would be to create separate postgres databases for
+    both production and staging, in which case you would substitute the following commands for the ones above:
+
+    ```sh
+    fly postgres create --name rockabilly-stack-template-db
+    fly postgres create --name rockabilly-stack-template-staging-db
+    fly postgres attach --postgres-app rockabilly-stack-template-db --app rockabilly-stack-template
+    fly postgres attach --postgres-app rockabilly-stack-template-staging-db --app rockabilly-stack-template-staging
+    ```
+    Fly will take care of setting the DATABASE_URL secret for you.
+
 
 Now that everything is set up you can commit and push your changes to your repo. Every commit to your `main` branch will trigger a deployment to your production environment, and every commit to your `dev` branch will trigger a deployment to your staging environment.
-
-### Connecting to your database
-
-The sqlite database lives at `/data/sqlite.db` in your deployed application. You can connect to the live database by running `fly ssh console -C database-cli`.
 
 ### Getting Help with Deployment
 

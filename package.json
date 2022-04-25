@@ -12,6 +12,7 @@
 		"dev": "run-p dev:*",
 		"dev:css": "npm run generate:css -- --watch",
 		"dev:remix": "cross-env NODE_ENV=development binode --require ./mocks -- @remix-run/dev:remix dev",
+		"docker": "docker-compose up -d",
 		"format": "prettier --write .",
 		"generate:css": "tailwindcss -o ./app/styles/tailwind.css",
 		"lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
