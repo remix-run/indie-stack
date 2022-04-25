@@ -72,9 +72,9 @@ export default function Index() {
 								href: "https://fly.io",
 							},
 							{
-								src: "https://user-images.githubusercontent.com/1500684/157764395-137ec949-382c-43bd-a3c0-0cb8cb22e22d.svg",
-								alt: "SQLite",
-								href: "https://sqlite.org",
+								src: "https://user-images.githubusercontent.com/1500684/158238105-e7279a0c-1640-40db-86b0-3d3a10aab824.svg",
+								alt: "PostgreSQL",
+								href: "https://www.postgresql.org/",
 							},
 							{
 								src: "https://user-images.githubusercontent.com/1500684/157764484-ad64a21a-d7fb-47e3-8669-ec046da20c1f.svg",
