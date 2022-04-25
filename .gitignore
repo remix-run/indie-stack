@@ -6,8 +6,8 @@ node_modules
 
 /cypress/screenshots
 /cypress/videos
-/prisma/data.db
-/prisma/data.db-journal
-/.idea
+/postgres-data
 
 /app/styles/tailwind.css
+
+/.idea
