@@ -6,6 +6,8 @@ processes = [ ]
 [experimental]
 allowed_public_ports = [ ]
 auto_rollback = true
+cmd = "start.sh"
+entrypoint = "sh"
 
 [[services]]
 internal_port = 8080
