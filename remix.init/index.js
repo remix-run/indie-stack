@@ -59,8 +59,6 @@ async function main({ rootDirectory }) {
 		fs.writeFile(PACKAGE_JSON_PATH, newPackageJson),
 	])
 
-	execSync(`npm run setup`, { stdio: 'inherit', cwd: rootDirectory })
-
 	// TODO: There is currently an issue with the test cleanup script that results
 	// in an error when running Cypress in some cases. Add this question back
 	// when this is fixed.
