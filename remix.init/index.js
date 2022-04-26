@@ -3,9 +3,9 @@ const crypto = require("crypto");
 const fs = require("fs/promises");
 const path = require("path");
 const inquirer = require("inquirer");
-
 const toml = require("@iarna/toml");
-const sort = require("sort-package-json");
+const PackageJson = require("@npmcli/package-json");
+const JSON5 = require("json5");
 
 function escapeRegExp(string) {
   // $& means the whole matched string
@@ -16,12 +16,11 @@ function getRandomString(length) {
   return crypto.randomBytes(length).toString("hex");
 }
 
-async function main({ rootDirectory }) {
+async function main({ rootDirectory, isTypeScript }) {
   const README_PATH = path.join(rootDirectory, "README.md");
   const FLY_TOML_PATH = path.join(rootDirectory, "fly.toml");
   const EXAMPLE_ENV_PATH = path.join(rootDirectory, ".env.example");
   const ENV_PATH = path.join(rootDirectory, ".env");
-  const PACKAGE_JSON_PATH = path.join(rootDirectory, "package.json");
 
   const REPLACER = "indie-stack-template";
 
@@ -36,7 +35,7 @@ async function main({ rootDirectory }) {
     fs.readFile(FLY_TOML_PATH, "utf-8"),
     fs.readFile(README_PATH, "utf-8"),
     fs.readFile(EXAMPLE_ENV_PATH, "utf-8"),
-    fs.readFile(PACKAGE_JSON_PATH, "utf-8"),
+    PackageJson.load(rootDirectory),
     fs.rm(path.join(rootDirectory, ".github/ISSUE_TEMPLATE"), {
       recursive: true,
     }),
@@ -56,18 +55,32 @@ async function main({ rootDirectory }) {
     APP_NAME
   );
 
-  const newPackageJson =
-    JSON.stringify(
-      sort({ ...JSON.parse(packageJson), name: APP_NAME }),
-      null,
-      2
-    ) + "\n";
+  packageJson.update({
+    name: APP_NAME,
+  });
+
+  let prismaSeed = packageJson.content.prisma?.seed;
+  if (prismaSeed && !isTypeScript) {
+    prismaSeed = prismaSeed.replace("seed.ts", "seed.js");
+    packageJson.update({
+      prisma: { seed: prismaSeed },
+    });
+  }
+
+  if (!isTypeScript) {
+    // we renamed this during `create-remix`
+    let JSCONFIG_PATH = path.join(rootDirectory, "jsconfig.json");
+    let jsconfigContent = fs.readFile(JSCONFIG_PATH, "utf-8");
+    let jsconfig = JSON5.parse(jsconfigContent);
+    delete jsconfig.include;
+    await fs.writeFile(JSCONFIG_PATH, JSON5.stringify(jsconfig, null, 2));
+  }
 
   await Promise.all([
     fs.writeFile(FLY_TOML_PATH, toml.stringify(prodToml)),
     fs.writeFile(README_PATH, newReadme),
     fs.writeFile(ENV_PATH, newEnv),
-    fs.writeFile(PACKAGE_JSON_PATH, newPackageJson),
+    packageJson.save(),
   ]);
 
   execSync(`npm run setup`, { stdio: "inherit", cwd: rootDirectory });
