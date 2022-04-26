@@ -71,9 +71,10 @@ async function main({ rootDirectory }) {
 	// });
 
 	console.log(
-		`Setup is complete. You're now ready to rock and roll 🤘
-
-Start development with \`npm run dev\`
+		`Initial setup is complete. Now perform the following steps:
+- Start the docker-based PostgreSQL database locally with \`npm run docker\`
+- Complete the app setup with \`npm run setup\`
+- Start development with \`npm run dev\`
     `.trim(),
 	)
 }
