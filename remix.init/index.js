@@ -74,8 +74,7 @@ async function main({ rootDirectory }) {
 		`Initial setup is complete. Now perform the following steps:
 - \`cd ${DIR_NAME}\`
 - Start the docker-based PostgreSQL database locally with \`npm run docker\`
-	- if you get an error like "Can't reach database server at \`localhost\`:\`5432\`" then docker hasn't quite finished setting up - wait a few seconds and try it again.
-- Complete the app setup with \`npm run setup\`
+- Complete the app setup with \`npm run setup\`. If you get an error like "Can't reach database server at \`localhost\`:\`5432\`" then docker hasn't quite finished setting up - wait a few seconds and try it again.
 - Start development with \`npm run dev\`
     `.trim(),
 	)
