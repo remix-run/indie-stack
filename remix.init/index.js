@@ -6,6 +6,7 @@ const inquirer = require("inquirer");
 const toml = require("@iarna/toml");
 const PackageJson = require("@npmcli/package-json");
 const JSON5 = require("json5");
+const { loadTsconfig } = require("tsconfig-paths/lib/tsconfig-loader");
 
 function escapeRegExp(string) {
   // $& means the whole matched string
@@ -17,6 +18,7 @@ function getRandomString(length) {
 }
 
 async function main({ rootDirectory, isTypeScript }) {
+  const REMIX_INIT_DIR = path.join(rootDirectory, "remix.init");
   const README_PATH = path.join(rootDirectory, "README.md");
   const FLY_TOML_PATH = path.join(rootDirectory, "fly.toml");
   const EXAMPLE_ENV_PATH = path.join(rootDirectory, ".env.example");
@@ -67,21 +69,38 @@ async function main({ rootDirectory, isTypeScript }) {
     });
   }
 
-  if (!isTypeScript) {
-    // we renamed this during `create-remix`
-    let JSCONFIG_PATH = path.join(rootDirectory, "jsconfig.json");
-    let jsconfigContent = fs.readFile(JSCONFIG_PATH, "utf-8");
-    let jsconfig = JSON5.parse(jsconfigContent);
-    delete jsconfig.include;
-    await fs.writeFile(JSCONFIG_PATH, JSON5.stringify(jsconfig, null, 2));
-  }
-
-  await Promise.all([
+  let fileOperationPromises = [
     fs.writeFile(FLY_TOML_PATH, toml.stringify(prodToml)),
     fs.writeFile(README_PATH, newReadme),
     fs.writeFile(ENV_PATH, newEnv),
     packageJson.save(),
-  ]);
+  ];
+
+  if (!isTypeScript) {
+    // we renamed this during `create-remix`
+    let JSCONFIG_PATH = path.join(rootDirectory, "jsconfig.json");
+    let jsconfig = loadTsconfig(JSCONFIG_PATH);
+    if (jsconfig) {
+      delete jsconfig.include;
+      fileOperationPromises.push(
+        fs.writeFile(JSCONFIG_PATH, JSON5.stringify(jsconfig, null, 2))
+      );
+    }
+
+    // we renamed this during `create-remix`
+    // instead of reading this file and changing it, we have a copy of it in this directory already set up for javascript
+    let VITEST_CONFIG_NAME = "vitest.config.js";
+    let VITEST_CONFIG_PATH = path.join(rootDirectory, VITEST_CONFIG_NAME);
+    fileOperationPromises.push(
+      fs.rm(VITEST_CONFIG_NAME),
+      fs.rename(
+        path.join(REMIX_INIT_DIR, VITEST_CONFIG_NAME),
+        VITEST_CONFIG_PATH
+      )
+    );
+  }
+
+  await Promise.all(fileOperationPromises);
 
   execSync(`npm run setup`, { stdio: "inherit", cwd: rootDirectory });
 
