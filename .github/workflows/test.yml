@@ -1,0 +1,141 @@
+name: 🚀 Test Against New Remix Version
+
+on:
+  repository_dispatch:
+    types: [remix-release]
+
+jobs:
+  bump:
+    name: 📦 Bump Remix Deps
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: 📥 Download deps
+        uses: bahmutov/npm-install@v1
+
+      - run: |
+          git config user.email "hello@remix.run"
+          git config user.name "Remix Run Bot"
+          git checkout -b remix-release/${{ github.event.client_payload.ref }}
+
+          npm i @remix-run/{node,react,serve,server-runtime}@${{ github.event.client_payload.ref }}
+          npm i -D @remix-run/{dev,eslint-config}@${{ github.event.client_payload.ref }}
+
+          git add .
+          git commit -m "🚀 bump Remix to v${{ github.event.client_payload.ref }}"
+
+  lint:
+    name: ⬣ ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: 📥 Download deps
+        uses: bahmutov/npm-install@v1
+
+      - name: 🔬 Lint
+        run: npm run lint
+
+  typecheck:
+    name: ʦ TypeScript
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: 📥 Download deps
+        uses: bahmutov/npm-install@v1
+
+      - name: 🔎 Type check
+        run: npm run typecheck --if-present
+
+  vitest:
+    name: ⚡ Vitest
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: 📥 Download deps
+        uses: bahmutov/npm-install@v1
+
+      - name: ⚡ Run vitest
+        run: npm run test -- --coverage
+
+  cypress:
+    name: ⚫️ Cypress
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🏄 Copy test env vars
+        run: cp .env.example .env
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: 📥 Download deps
+        uses: bahmutov/npm-install@v1
+
+      - name: 🛠 Setup Database
+        run: npx prisma migrate reset --force
+
+      - name: ⚙️ Build
+        run: npm run build
+
+      - name: 🌳 Cypress run
+        uses: cypress-io/github-action@v3
+        with:
+          start: npm run start:mocks
+          wait-on: "http://localhost:8811"
+        env:
+          PORT: "8811"
+
+  cleanup:
+    if: always()
+    name: 🗑 Cleanup
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          git push origin --delete remix-release/${{ github.event.client_payload.ref }}
