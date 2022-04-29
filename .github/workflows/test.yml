@@ -43,6 +43,8 @@ jobs:
 
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
+        with:
+          ref: remix-release/${{ github.event.client_payload.ref }}
 
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
@@ -64,6 +66,8 @@ jobs:
 
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
+        with:
+          ref: remix-release/${{ github.event.client_payload.ref }}
 
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
@@ -85,6 +89,8 @@ jobs:
 
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
+        with:
+          ref: remix-release/${{ github.event.client_payload.ref }}
 
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
@@ -106,6 +112,8 @@ jobs:
 
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
+        with:
+          ref: remix-release/${{ github.event.client_payload.ref }}
 
       - name: 🏄 Copy test env vars
         run: cp .env.example .env
