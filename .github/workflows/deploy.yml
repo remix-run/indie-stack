@@ -4,11 +4,18 @@ on:
     branches:
       - main
       - dev
+      - remix-release-test
   pull_request: {}
 
 jobs:
-  lint:
-    name: ⬣ ESLint
+  # This job is to test new remix releases against our stacks,
+  # feel free to delete it along with any jobs that check for
+  # `if: github.repository == 'remix-run/indie-stack'`
+  # you can also remove the "🌴 Get branch" step from each job
+  # along with the `ref: ${{ env.BRANCH }}`
+  bump:
+    name: 📦 Bump Remix Deps
+    if: github.repository == 'remix-run/indie-stack'
     runs-on: ubuntu-latest
     steps:
       - name: 🛑 Cancel Previous Runs
@@ -16,6 +23,48 @@ jobs:
 
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
+        with:
+          ref: ${{ env.BRANCH }}
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: 📥 Download deps
+        uses: bahmutov/npm-install@v1
+
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git checkout -b remix-release-test
+
+          npm i @remix-run/{node,react,serve,server-runtime}@${{ github.event.client_payload.ref }}
+          npm i -D @remix-run/{dev,eslint-config}@${{ github.event.client_payload.ref }}
+
+          git add .
+          git commit -m "🚀 bump Remix to v${{ github.event.client_payload.ref }}"
+          git push origin remix-release-test --force
+
+  lint:
+    name: ⬣ ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+
+      - name: 🌴 Get branch
+        run: |
+          if [[ -z "${{ github.event.client_payload.ref }}" ]]; then
+            echo "::set-env name=BRANCH::${{ github.ref }}"
+          else
+            echo "::set-env name=BRANCH::${{ github.event.client_payload.ref }}"
+          fi
+
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ env.BRANCH }}
 
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
@@ -35,8 +84,18 @@ jobs:
       - name: 🛑 Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.9.1
 
+      - name: 🌴 Get branch
+        run: |
+          if [[ -z "${{ github.event.client_payload.ref }}" ]]; then
+            echo "::set-env name=BRANCH::${{ github.ref }}"
+          else
+            echo "::set-env name=BRANCH::${{ github.event.client_payload.ref }}"
+          fi
+
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
+        with:
+          ref: ${{ env.BRANCH }}
 
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
@@ -56,8 +115,18 @@ jobs:
       - name: 🛑 Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.9.1
 
+      - name: 🌴 Get branch
+        run: |
+          if [[ -z "${{ github.event.client_payload.ref }}" ]]; then
+            echo "::set-env name=BRANCH::${{ github.ref }}"
+          else
+            echo "::set-env name=BRANCH::${{ github.event.client_payload.ref }}"
+          fi
+
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
+        with:
+          ref: ${{ env.BRANCH }}
 
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
@@ -77,8 +146,18 @@ jobs:
       - name: 🛑 Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.9.1
 
+      - name: 🌴 Get branch
+        run: |
+          if [[ -z "${{ github.event.client_payload.ref }}" ]]; then
+            echo "::set-env name=BRANCH::${{ github.ref }}"
+          else
+            echo "::set-env name=BRANCH::${{ github.event.client_payload.ref }}"
+          fi
+
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
+        with:
+          ref: ${{ env.BRANCH }}
 
       - name: 🏄 Copy test env vars
         run: cp .env.example .env
