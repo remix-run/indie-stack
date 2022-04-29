@@ -33,6 +33,7 @@ jobs:
 
           git add .
           git commit -m "🚀 bump Remix to v${{ github.event.client_payload.ref }}"
+          git push origin remix-release/${{ github.event.client_payload.ref }}
 
   lint:
     name: ⬣ ESLint
