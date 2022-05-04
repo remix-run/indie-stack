@@ -36,3 +36,20 @@ model Note {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 }
+
+enum WebhookEventState {
+    PENDING
+    PROCESSING
+    PROCESSED
+    FAILED
+}
+
+model WebhookEvent {
+    service    String
+    externalId String
+    event      String
+    state      WebhookEventState @default(PENDING)
+    createdAt  DateTime          @default(now())
+    failReason String?
+    @@unique([service, externalId])
+}

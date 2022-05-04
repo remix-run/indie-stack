@@ -1,6 +1,9 @@
 import type { EntryContext } from '@remix-run/node'
 import { RemixServer } from '@remix-run/react'
 import { renderToString } from 'react-dom/server'
+import { registerWebhooks } from '~/webhooks/register-webhooks.server'
+
+registerWebhooks()
 
 export default function handleRequest(
 	request: Request,

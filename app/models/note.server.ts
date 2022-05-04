@@ -48,3 +48,16 @@ export function deleteNote({ id, userId }: Pick<Note, 'id'> & { userId: User['id
 		where: { id, userId },
 	})
 }
+
+export function updateNote({ id, title, body }: Pick<Partial<Note>, 'id' | 'title' | 'body'>) {
+	if (!id) return null
+	return prisma.note.update({
+		where: {
+			id,
+		},
+		data: {
+			...(title ? { title } : {}),
+			...(body ? { body } : {}),
+		}
+	})
+}
