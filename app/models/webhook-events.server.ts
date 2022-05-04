@@ -31,17 +31,17 @@ export async function addWebhookEventToQueue(service: string, externalId: string
 	})
 }
 
-export async function getUnprocessedWebhookEvents(
-	{
-		excludeFailures = false,
-	}: {
-		excludeFailures?: boolean
-	} = { excludeFailures: false },
-): Promise<WebhookEvent[]> {
+export async function getUnprocessedWebhookEvents({
+	maxFailures,
+	excludeFailures,
+}: {
+	maxFailures: number
+	excludeFailures: boolean
+}): Promise<WebhookEvent[]> {
 	return prisma.webhookEvent.findMany({
 		where: excludeFailures
-			? { AND: [{ state: { not: 'PROCESSED' } }, { state: { not: 'FAILED' } }] }
-			: { state: { not: 'PROCESSED' } },
+			? { AND: [{ state: { not: 'FAILED' } }, { state: { not: 'PROCESSED' } }, { failCount: { lt: maxFailures } }] }
+			: { AND: [{ state: { not: 'PROCESSED' } }, { failCount: { lt: maxFailures } }] },
 		orderBy: {
 			createdAt: 'asc',
 		},
@@ -52,12 +52,14 @@ export async function setWebhookEventState({
 	service,
 	externalId,
 	state,
-	reason,
+	failReason,
+	failCount,
 }: {
 	service: string
 	externalId: string
 	state: WebhookEventState
-	reason?: string
+	failReason?: string
+	failCount: number
 }): Promise<WebhookEvent> {
 	return prisma.webhookEvent.update({
 		where: {
@@ -68,7 +70,8 @@ export async function setWebhookEventState({
 		},
 		data: {
 			state,
-			...(reason ? { failReason: reason } : {}),
+			failCount,
+			...(failReason ? { failReason } : {}),
 		},
 	})
 }

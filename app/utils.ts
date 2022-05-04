@@ -64,3 +64,9 @@ export function useUser(): User {
 export function validateEmail(email: unknown): email is string {
 	return typeof email === 'string' && email.length > 3 && email.includes('@')
 }
+
+export function getMessageFromError(e: unknown): string {
+	if (typeof e === 'string') return e
+	if (e instanceof Error) return e.message
+	return 'MALFORMED ERROR!'
+}

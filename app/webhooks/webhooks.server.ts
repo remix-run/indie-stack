@@ -1,5 +1,6 @@
 import type { WebhookEvent } from '@prisma/client'
 import { getUnprocessedWebhookEvents, setWebhookEventState, WebhookEventState } from '~/models/webhook-events.server'
+import { getMessageFromError } from '~/utils'
 
 export type ServiceEventValidation = {
 	service: string
@@ -9,13 +10,19 @@ export type ServiceEventValidation = {
 	payload?: string
 }
 
+export type ProcessingResult = {
+	success: boolean
+	errorMessage?: string
+}
+
 export type ServiceDefinition = {
 	code: string
 	validateEvent: (request: Request) => Promise<ServiceEventValidation>
-	processEvent: (serializedEvent: string) => Promise<boolean>
+	processEvent: (serializedEvent: string) => Promise<ProcessingResult>
 }
 
 const knownServices: ServiceDefinition[] = []
+const PROCESSING_RETRIES = 3
 
 export function registerWebhookService(serviceDefinition: ServiceDefinition) {
 	knownServices.push(serviceDefinition)
@@ -49,7 +56,10 @@ export async function validateWebhookEvent(request: Request): Promise<ServiceEve
 }
 
 export async function processWebhookEvents(): Promise<void> {
-	let unprocessedEvents: WebhookEvent[] = await getUnprocessedWebhookEvents()
+	let unprocessedEvents: WebhookEvent[] = await getUnprocessedWebhookEvents({
+		maxFailures: PROCESSING_RETRIES,
+		excludeFailures: false
+	})
 	while (unprocessedEvents.length > 0) {
 		for (let i = 0; i < unprocessedEvents.length; i++) {
 			const it = unprocessedEvents[i]
@@ -57,27 +67,48 @@ export async function processWebhookEvents(): Promise<void> {
 				service: it.service,
 				externalId: it.externalId,
 				state: WebhookEventState.PROCESSING,
+				failCount: it.failCount,
 			})
 
 			try {
 				const service = knownServices.find(svc => svc.code === it.service)
-				const success = (await service?.processEvent(it.event)) || false
-				await setWebhookEventState({
-					service: it.service,
-					externalId: it.externalId,
-					state: success ? WebhookEventState.PROCESSED : WebhookEventState.FAILED,
-				})
-			} catch (e: any) {
+				if (!service) {
+					throw new Error(`Cannot find service: ${it.service}`)
+				}
+				const result = (await service!.processEvent(it.event))
+				if (result.success) {
+					await setWebhookEventState({
+						service: it.service,
+						externalId: it.externalId,
+						state: WebhookEventState.PROCESSED,
+						failCount: it.failCount,
+					})
+				}
+				else {
+					await setWebhookEventState({
+						service: it.service,
+						externalId: it.externalId,
+						state: WebhookEventState.FAILED,
+						failReason: result.errorMessage,
+						failCount: (it.failCount + 1),
+					})
+				}
+			} catch (e: unknown) {
+				const message = getMessageFromError(e)
 				await setWebhookEventState({
 					service: it.service,
 					externalId: it.externalId,
 					state: WebhookEventState.FAILED,
-					reason: e.message,
+					failReason: message,
+					failCount: (it.failCount + 1)
 				})
-				console.error(`webhooks.server: processWebhookEvents: ${e.message}`)
+				console.error(`webhooks.server: processWebhookEvents: ${message}`)
 			}
 
-			unprocessedEvents = await getUnprocessedWebhookEvents({ excludeFailures: true })
+			unprocessedEvents = await getUnprocessedWebhookEvents({
+				maxFailures: PROCESSING_RETRIES,
+				excludeFailures: true
+			})
 		}
 	}
 }

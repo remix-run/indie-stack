@@ -1,6 +1,6 @@
 import type { ActionFunction } from '@remix-run/node';
 import { json } from '@remix-run/node'
-import { validateEndpoint, validateWebhookEvent } from '~/webhooks.server'
+import { validateEndpoint, validateWebhookEvent } from '~/webhooks/webhooks.server'
 import { badRequest, notFound } from 'remix-utils'
 import { addWebhookEventToQueue, isWebhookEventDuplicated } from '~/models/webhook-events.server'
 

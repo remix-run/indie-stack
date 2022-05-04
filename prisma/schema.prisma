@@ -1,40 +1,40 @@
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 model User {
-  id    String @id @default(cuid())
-  email String @unique
+    id    String @id @default(cuid())
+    email String @unique
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
-  password Password?
-  notes    Note[]
+    password Password?
+    notes    Note[]
 }
 
 model Password {
-  hash String
+    hash String
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String @unique
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    userId String @unique
 }
 
 model Note {
-  id    String @id @default(cuid())
-  title String
-  body  String
+    id    String @id @default(cuid())
+    title String
+    body  String
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    userId String
 }
 
 enum WebhookEventState {
@@ -51,5 +51,7 @@ model WebhookEvent {
     state      WebhookEventState @default(PENDING)
     createdAt  DateTime          @default(now())
     failReason String?
+    failCount  Int               @default(0)
+
     @@unique([service, externalId])
 }

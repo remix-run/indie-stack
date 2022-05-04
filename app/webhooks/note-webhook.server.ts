@@ -1,7 +1,8 @@
-import type { ServiceEventValidation } from '~/webhooks.server'
-import { registerWebhookService } from '~/webhooks.server'
+import type { ProcessingResult, ServiceEventValidation } from '~/webhooks/webhooks.server'
+import { registerWebhookService } from '~/webhooks/webhooks.server'
 import { createNote, updateNote } from '~/models/note.server'
 import { getUserByEmail } from '~/models/user.server'
+import { getMessageFromError } from '~/utils'
 
 // Note webhook calls need to have the following API key set in a Basic Auth header as the username, with no password.
 // Normally this would come from the service calling the webhook, and would be retrieved from an environment variable.
@@ -39,26 +40,39 @@ async function validateEvent(request: Request): Promise<ServiceEventValidation> 
 	}
 }
 
-async function processEvent(serializedEvent: string): Promise<boolean> {
+async function processEvent(serializedEvent: string): Promise<ProcessingResult> {
 	const notesEvent: NotesWebhookBody = JSON.parse(serializedEvent)
 	if (notesEvent.id) {
-		const result = await updateNote({
-			id: notesEvent.id,
-			...(notesEvent.title ? { title: notesEvent.title! } : {}),
-			...(notesEvent.noteContent ? { body: notesEvent.noteContent! } : {}),
-		})
-		return !!result
+		try {
+			const result = await updateNote({
+				id: notesEvent.id,
+				...(notesEvent.title ? { title: notesEvent.title! } : {}),
+				...(notesEvent.noteContent ? { body: notesEvent.noteContent! } : {}),
+			})
+			return { success: !!result, }
+		}
+		catch (e: unknown) {
+			return { success: false, errorMessage: getMessageFromError(e)}
+		}
 	}
 	else {
-		if (!notesEvent.userEmail || !notesEvent.title || !notesEvent.noteContent) return false
-		const user = await getUserByEmail(notesEvent.userEmail)
-		if (!user) return false
-		const result = await createNote({
-			userId: user.id,
-			title: notesEvent.title,
-			body: notesEvent.noteContent,
-		})
-		return !!result
+		if (!notesEvent.userEmail || !notesEvent.title || !notesEvent.noteContent) return {
+			success: false,
+			errorMessage: 'Adding a new note requires a user email, title and note content'
+		}
+		try {
+			const user = await getUserByEmail(notesEvent.userEmail)
+			if (!user) return { success: false, errorMessage: 'Could not find user in database'}
+			const result = await createNote({
+				userId: user.id,
+				title: notesEvent.title,
+				body: notesEvent.noteContent,
+			})
+			return { success: !!result, }
+		}
+		catch (e) {
+			return { success: false, errorMessage: getMessageFromError(e)}
+		}
 	}
 }
 

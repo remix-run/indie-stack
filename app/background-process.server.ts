@@ -12,7 +12,7 @@ export function startBackgroundProcessing() {
 
 export function restartBackgroundProcessing() {
 	console.log('Starting background processor')
-	childProcess = fork('./build/background-processor.js', [], {execArgv:['--inspect-brk']})
+	childProcess = fork('./build/background-processor.js')
 	childProcess.on('close', (code: number) => {
 		console.log(`Background processing function terminated with code ${code}`)
 	})
