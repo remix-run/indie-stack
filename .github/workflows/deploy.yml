@@ -4,7 +4,10 @@ on:
     branches:
       - main
       - dev
-  pull_request: {}
+  pull_request: {} 
+permissions:
+  actions: write
+  contents: read
 
 jobs:
   lint:
