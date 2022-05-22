@@ -1,8 +1,6 @@
 {
   "name": "indie-stack-template",
   "private": true,
-  "description": "",
-  "license": "",
   "sideEffects": false,
   "scripts": {
     "build": "run-s build:*",
