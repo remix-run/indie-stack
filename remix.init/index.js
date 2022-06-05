@@ -72,6 +72,10 @@ async function main({ rootDirectory }) {
       recursive: true,
     }),
     fs.rm(path.join(rootDirectory, ".github/PULL_REQUEST_TEMPLATE.md")),
+    fs.rm(path.join(rootDirectory, "remix.init"), {
+      recursive: true,
+      force: true,
+    }),
   ]);
 
   execSync(`npm run setup`, { stdio: "inherit", cwd: rootDirectory });
