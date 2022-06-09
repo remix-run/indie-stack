@@ -109,7 +109,7 @@ jobs:
         run: npm run build
 
       - name: 🌳 Cypress run
-        uses: cypress-io/github-action@v3
+        uses: cypress-io/github-action@v4
         with:
           start: npm run start:mocks
           wait-on: "http://localhost:8811"
@@ -136,11 +136,11 @@ jobs:
           field: "app"
 
       - name: 🐳 Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v2
 
       # Setup cache
       - name: ⚡️ Cache Docker layers
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
@@ -148,14 +148,14 @@ jobs:
             ${{ runner.os }}-buildx-
 
       - name: 🔑 Fly Registry Auth
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           registry: registry.fly.io
           username: x
           password: ${{ secrets.FLY_API_TOKEN }}
 
       - name: 🐳 Docker build
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: .
           push: true
