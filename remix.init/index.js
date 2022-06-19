@@ -76,16 +76,13 @@ async function main({ rootDirectory }) {
 
   execSync(`npm run setup`, { stdio: "inherit", cwd: rootDirectory });
 
-  // TODO: There is currently an issue with the test cleanup script that results
-  // in an error when running Cypress in some cases. Add this question back
-  // when this is fixed.
-  // await askSetupQuestions({ rootDirectory }).catch((error) => {
-  //   if (error.isTtyError) {
-  //     // Prompt couldn't be rendered in the current environment
-  //   } else {
-  //     throw error;
-  //   }
-  // });
+  await askSetupQuestions({ rootDirectory }).catch((error) => {
+    if (error.isTtyError) {
+      // Prompt couldn't be rendered in the current environment
+    } else {
+      throw error;
+    }
+  });
 
   console.log(
     `Setup is complete. You're now ready to rock and roll 🤘
