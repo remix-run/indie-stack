@@ -34,6 +34,11 @@ Click this button to create a [Gitpod](https://gitpod.io) workspace with the pro
 
 ## Development
 
+- Preparation: Create your own `.env` file in root direction of this project.
+  You can copy `.env.example` and rename it to `.env`. In this file, you are providing URL to your SQLite DB.
+  Without this file (`.env`) app will be not able to connect to DB, so will no start.
+
+
 - Initial setup: _If you just generated this project, this step has been done for you._
 
   ```sh
