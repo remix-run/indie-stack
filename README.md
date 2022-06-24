@@ -34,7 +34,7 @@ Click this button to create a [Gitpod](https://gitpod.io) workspace with the pro
 
 ## Development
 
-- This step only applies if you've opted out of having the CLI install dependcies for you:
+- This step only applies if you've opted out of having the CLI install dependencies for you:
   
   ```sh
   npx remix init
