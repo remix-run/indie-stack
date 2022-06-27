@@ -1,0 +1,127 @@
+name: 🚀 Deploy
+on:
+  push:
+  pull_request:
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  install:
+    name: Install
+    runs-on: ubuntu-latest
+    continue-on-error: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+            token: ${{ secrets.GIT_TOKEN || github.token  }}
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Cache yarn files
+        uses: actions/cache@v3
+        id: yarn-cache-files
+        with:
+            path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+            key: ${{ runner.os }}-yarn-files-${{ hashFiles('**/yarn.lock') }}
+            restore-keys: ${{ runner.os }}-yarn-files-
+
+      - name: Setup yarn access
+        run: |
+            git config --global url."https://${{ secrets.GIT_TOKEN || github.token  }}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
+            sed -i "s|Builder/|git+https://github.com/Money-Flow/|" package.json
+
+      - name: Install JS dependencies
+        run: yarn install
+
+      - name: Pack artifact
+        run: tar czf /tmp/artifact.tar.gz .
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+            name: frontend-artifact
+            path: /tmp/artifact.tar.gz
+            retention-days: 1
+
+  lint:
+    name: ⬣ ESLint
+    needs: [install]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+            name: frontend-artifact
+
+      - name: Unpack artifact
+        run: tar xf artifact.tar.gz
+
+      - name: 🔬 Lint
+        run: yarn run lint
+
+  typecheck:
+    name: ʦ TypeScript
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+            name: frontend-artifact
+
+      - name: Unpack artifact
+        run: tar xf artifact.tar.gz
+
+      - name: 🔎 Type check
+        run: yarn typecheck --if-present
+
+  vitest:
+    name: ⚡ Vitest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+            name: frontend-artifact
+
+      - name: Unpack artifact
+        run: tar xf artifact.tar.gz
+
+      - name: 📥 Download deps
+        uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
+
+      - name: ⚡ Run vitest
+        run: yarn test -- --coverage
+
+  cypress:
+    name: ⚫️ Cypress
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+            name: frontend-artifact
+
+      - name: Unpack artifact
+        run: tar xf artifact.tar.gz
+
+      - name: 🛠 Setup Database
+        run: yarn prisma migrate reset --force
+
+      - name: ⚙️ Build
+        run: yarn run build
+
+      - name: 🌳 Cypress run
+        uses: cypress-io/github-action@v4
+        with:
+          start: yarn start:mocks
+          wait-on: "http://localhost:8811"
+        env:
+          PORT: "8811"
+
+  
