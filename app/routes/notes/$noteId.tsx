@@ -3,13 +3,12 @@ import { json, redirect } from "@remix-run/node";
 import { Form, useCatch, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
-import type { Note } from "~/models/note.server";
 import { deleteNote } from "~/models/note.server";
 import { getNote } from "~/models/note.server";
 import { requireUserId } from "~/session.server";
 
 type LoaderData = {
-  note: Note;
+  note: NonNullable<Awaited<ReturnType<typeof getNote>>>;
 };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
