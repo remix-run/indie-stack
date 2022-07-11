@@ -89,6 +89,7 @@ Prior to your first deployment, you'll need to do a few things:
   fly create indie-stack-template
   fly create indie-stack-template-staging
   ```
+  > **Note:** Make sure this name matches the `app` set in your `fly.toml` file. Otherwise, you will not be able to deploy.
 
   - Initialize Git.
 
