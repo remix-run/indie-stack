@@ -6,18 +6,14 @@ import { requireUserId } from "~/session.server";
 import { useUser } from "~/utils";
 import { getNoteListItems } from "~/models/note.server";
 
-type LoaderData = {
-  noteListItems: Awaited<ReturnType<typeof getNoteListItems>>;
-};
-
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await requireUserId(request);
   const noteListItems = await getNoteListItems({ userId });
-  return json<LoaderData>({ noteListItems });
+  return json({ noteListItems });
 };
 
 export default function NotesPage() {
-  const data = useLoaderData() as LoaderData;
+  const data = useLoaderData<typeof loader>();
   const user = useUser();
 
   return (
