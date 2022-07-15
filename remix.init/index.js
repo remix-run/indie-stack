@@ -2,7 +2,6 @@ const { execSync } = require("child_process");
 const crypto = require("crypto");
 const fs = require("fs/promises");
 const path = require("path");
-const inquirer = require("inquirer");
 
 const toml = require("@iarna/toml");
 const sort = require("sort-package-json");
@@ -76,42 +75,12 @@ async function main({ rootDirectory }) {
 
   execSync(`npm run setup`, { stdio: "inherit", cwd: rootDirectory });
 
-  // TODO: There is currently an issue with the test cleanup script that results
-  // in an error when running Cypress in some cases. Add this question back
-  // when this is fixed.
-  // await askSetupQuestions({ rootDirectory }).catch((error) => {
-  //   if (error.isTtyError) {
-  //     // Prompt couldn't be rendered in the current environment
-  //   } else {
-  //     throw error;
-  //   }
-  // });
-
   console.log(
     `Setup is complete. You're now ready to rock and roll 🤘
 
 Start development with \`npm run dev\`
     `.trim()
   );
-}
-
-async function askSetupQuestions({ rootDirectory }) {
-  const answers = await inquirer.prompt([
-    {
-      name: "validate",
-      type: "confirm",
-      default: false,
-      message:
-        "Do you want to run the build/tests/etc to verify things are setup properly?",
-    },
-  ]);
-
-  if (answers.validate) {
-    console.log(
-      `Running the validate script to make sure everything was set up properly`
-    );
-    execSync(`npm run validate`, { stdio: "inherit", cwd: rootDirectory });
-  }
 }
 
 module.exports = main;
