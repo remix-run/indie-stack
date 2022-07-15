@@ -5,6 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "@iarna/toml": "^2.2.5",
-    "sort-package-json": "^1.57.0"
+    "sort-package-json": "^1.57.0",
+    "yaml": "^2.1.1"
   }
 }
