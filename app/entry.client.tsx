@@ -14,7 +14,7 @@ function hydrate() {
 }
 
 if (window.requestIdleCallback) {
-  window.requestIdleCallback(mount)
+  window.requestIdleCallback(hydrate)
 } else {
-  window.setTimeout(mount, 1)
+  window.setTimeout(hydrate, 1)
 }
