@@ -4,11 +4,10 @@
 // and it will log out the cookie value you can use to interact with the server
 // as that new user.
 
-import { installGlobals } from "@remix-run/node";
 import { parse } from "cookie";
-
-import { createUser } from "~/models/user.server";
+import { installGlobals } from "@remix-run/node";
 import { createUserSession } from "~/session.server";
+import { createUser } from "~/models/user.server";
 
 installGlobals();
 
