@@ -2,7 +2,7 @@ import * as React from "react";
 import { RemixBrowser } from "@remix-run/react";
 import { hydrateRoot } from "react-dom/client";
 
-requestIdleCallback(() => {
+function mount() {
   React.startTransition(() => {
     hydrateRoot(
       document,
@@ -11,4 +11,10 @@ requestIdleCallback(() => {
       </React.StrictMode>
     );
   });
-});
+}
+
+if (window.requestIdleCallback) {
+  window.requestIdleCallback(mount)
+} else {
+  window.setTimeout(mount, 1)
+}
