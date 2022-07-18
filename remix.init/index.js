@@ -6,20 +6,13 @@ const path = require("path");
 const toml = require("@iarna/toml");
 const PackageJson = require("@npmcli/package-json");
 const YAML = require("yaml");
-const semver = require("semver");
 
-const cleanupCypressFiles = ({ filesEntries, isTypeScript, packageManager }) =>
+const cleanupCypressFiles = (filesEntries) =>
   filesEntries.flatMap(([filePath, content]) => {
-    let newContent = content.replace(
-      "npx ts-node",
-      isTypeScript ? `${packageManager.exec} ts-node` : "node"
-    );
-
-    if (!isTypeScript) {
-      newContent = newContent
-        .replace("create-user.ts", "create-user.js")
-        .replace("delete-user.ts", "delete-user.js");
-    }
+    const newContent = content
+      .replace("npx ts-node", "node")
+      .replace("create-user.ts", "create-user.js")
+      .replace("delete-user.ts", "delete-user.js");
 
     return [fs.writeFile(filePath, newContent)];
   });
@@ -45,39 +38,6 @@ const cleanupVitestConfig = (vitestConfig, vitestConfigPath) => {
 const escapeRegExp = (string) =>
   // $& means the whole matched string
   string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
-const getPackageManagerCommand = (packageManager) =>
-  // Inspired by https://github.com/nrwl/nx/blob/bd9b33eaef0393d01f747ea9a2ac5d2ca1fb87c6/packages/nx/src/utils/package-manager.ts#L38-L103
-  ({
-    npm: () => ({
-      exec: "npx",
-      lockfile: "package-lock.json",
-      run: (script, args) => `npm run ${script} ${args ? `-- ${args}` : ""}`,
-    }),
-    pnpm: () => {
-      const pnpmVersion = getPackageManagerVersion("pnpm");
-      const includeDoubleDashBeforeArgs = semver.lt(pnpmVersion, "7.0.0");
-      const useExec = semver.gte(pnpmVersion, "6.13.0");
-
-      return {
-        exec: useExec ? "pnpm exec" : "pnpx",
-        lockfile: "pnpm-lock.yaml",
-        run: (script, args) =>
-          includeDoubleDashBeforeArgs
-            ? `pnpm run ${script} ${args ? `-- ${args}` : ""}`
-            : `pnpm run ${script} ${args || ""}`,
-      };
-    },
-    yarn: () => ({
-      exec: "yarn",
-      lockfile: "yarn.lock",
-      run: (script, args) => `yarn ${script} ${args || ""}`,
-    }),
-  }[packageManager]());
-
-const getPackageManagerVersion = (packageManager) =>
-  // Copied over from https://github.com/nrwl/nx/blob/bd9b33eaef0393d01f747ea9a2ac5d2ca1fb87c6/packages/nx/src/utils/package-manager.ts#L105-L114
-  execSync(`${packageManager} --version`).toString("utf-8").trim();
 
 const getRandomString = (length) => crypto.randomBytes(length).toString("hex");
 
@@ -127,8 +87,6 @@ const updatePackageJson = ({ APP_NAME, isTypeScript, packageJson }) => {
 };
 
 const main = async ({ isTypeScript, packageManager, rootDirectory }) => {
-  const pm = getPackageManagerCommand(packageManager);
-
   const README_PATH = path.join(rootDirectory, "README.md");
   const FLY_TOML_PATH = path.join(rootDirectory, "fly.toml");
   const EXAMPLE_ENV_PATH = path.join(rootDirectory, ".env.example");
@@ -177,9 +135,9 @@ const main = async ({ isTypeScript, packageManager, rootDirectory }) => {
     fs.readFile(README_PATH, "utf-8"),
     fs.readFile(EXAMPLE_ENV_PATH, "utf-8"),
     fs.readFile(DOCKERFILE_PATH, "utf-8"),
-    fs.readFile(CYPRESS_COMMANDS_PATH, "utf-8"),
-    fs.readFile(CREATE_USER_COMMAND_PATH, "utf-8"),
-    fs.readFile(DELETE_USER_COMMAND_PATH, "utf-8"),
+    readFileIfNotTypeScript(isTypeScript, CYPRESS_COMMANDS_PATH),
+    readFileIfNotTypeScript(isTypeScript, CREATE_USER_COMMAND_PATH),
+    readFileIfNotTypeScript(isTypeScript, DELETE_USER_COMMAND_PATH),
     readFileIfNotTypeScript(isTypeScript, DEPLOY_WORKFLOW_PATH, (s) =>
       YAML.parse(s)
     ),
@@ -200,10 +158,16 @@ const main = async ({ isTypeScript, packageManager, rootDirectory }) => {
     APP_NAME
   );
 
-  const newDockerfile = pm.lockfile
+  const lockfile = {
+    npm: "package-lock.json",
+    yarn: "yarn.lock",
+    pnpm: "pnpm-lock.yaml",
+  }[packageManager];
+
+  const newDockerfile = lockfile
     ? dockerfile.replace(
         new RegExp(escapeRegExp("ADD package.json"), "g"),
-        `ADD package.json ${pm.lockfile}`
+        `ADD package.json ${lockfile}`
       )
     : dockerfile;
 
@@ -214,15 +178,6 @@ const main = async ({ isTypeScript, packageManager, rootDirectory }) => {
     fs.writeFile(README_PATH, newReadme),
     fs.writeFile(ENV_PATH, newEnv),
     fs.writeFile(DOCKERFILE_PATH, newDockerfile),
-    ...cleanupCypressFiles({
-      fileEntries: [
-        [CYPRESS_COMMANDS_PATH, cypressCommands],
-        [CREATE_USER_COMMAND_PATH, createUserCommand],
-        [DELETE_USER_COMMAND_PATH, deleteUserCommand],
-      ],
-      isTypeScript,
-      packageManager: pm,
-    }),
     packageJson.save(),
     fs.copyFile(
       path.join(rootDirectory, "remix.init", "gitignore"),
@@ -236,6 +191,14 @@ const main = async ({ isTypeScript, packageManager, rootDirectory }) => {
 
   if (!isTypeScript) {
     fileOperationPromises.push(
+      ...cleanupCypressFiles([
+        [CYPRESS_COMMANDS_PATH, cypressCommands],
+        [CREATE_USER_COMMAND_PATH, createUserCommand],
+        [DELETE_USER_COMMAND_PATH, deleteUserCommand],
+      ])
+    );
+
+    fileOperationPromises.push(
       ...cleanupDeployWorkflow(deployWorkflow, DEPLOY_WORKFLOW_PATH)
     );
 
@@ -246,9 +209,9 @@ const main = async ({ isTypeScript, packageManager, rootDirectory }) => {
 
   await Promise.all(fileOperationPromises);
 
-  execSync(pm.run("setup"), { cwd: rootDirectory, stdio: "inherit" });
+  execSync("npm run setup", { cwd: rootDirectory, stdio: "inherit" });
 
-  execSync(pm.run("format", "--loglevel warn"), {
+  execSync("npm run format -- --loglevel warn", {
     cwd: rootDirectory,
     stdio: "inherit",
   });
@@ -256,7 +219,7 @@ const main = async ({ isTypeScript, packageManager, rootDirectory }) => {
   console.log(
     `Setup is complete. You're now ready to rock and roll 🤘
 
-Start development with \`${pm.run("dev")}\`
+Start development with \`npm run dev\`
     `.trim()
   );
 };
