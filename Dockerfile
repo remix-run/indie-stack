@@ -12,7 +12,7 @@ FROM base as deps
 
 WORKDIR /myapp
 
-ADD package.json ./
+ADD package.json .npmrc ./
 RUN npm install --production=false
 
 # Setup production node_modules
@@ -21,7 +21,7 @@ FROM base as production-deps
 WORKDIR /myapp
 
 COPY --from=deps /myapp/node_modules /myapp/node_modules
-ADD package.json ./
+ADD package.json .npmrc ./
 RUN npm prune --production
 
 # Build the app
