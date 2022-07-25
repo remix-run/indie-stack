@@ -26,6 +26,16 @@ declare global {
        *    cy.cleanupUser({ email: 'whatever@example.com' })
        */
       cleanupUser: typeof cleanupUser;
+
+      /**
+       * Checks to make sure you are on the correct url as your pathname
+       *
+       * @returns {typeof checkUrl}
+       * @memberof Chainable
+       * @example
+       *    cy.checkUrl('/')
+       */
+      checkUrl: typeof checkUrl;
     }
   }
 }
@@ -70,6 +80,17 @@ function deleteUserByEmail(email: string) {
 
 Cypress.Commands.add("login", login);
 Cypress.Commands.add("cleanupUser", cleanupUser);
+
+// We're waiting a second because of this issue happen randomly
+// https://github.com/cypress-io/cypress/issues/7306
+// Also added custom types to avoid getting detached
+// https://github.com/cypress-io/cypress/issues/7306#issuecomment-1152752612
+// ===========================================================
+function checkUrl(url: string) {
+  console.log(cy.location);
+  cy.location("pathname").should("contain", url).wait(1000);
+}
+Cypress.Commands.add("checkUrl", checkUrl);
 
 /*
 eslint

@@ -14,6 +14,8 @@ describe("smoke tests", () => {
     cy.then(() => ({ email: loginForm.email })).as("user");
 
     cy.visit("/");
+    cy.checkUrl("/");
+
     cy.findByRole("link", { name: /sign up/i }).click();
 
     cy.findByRole("textbox", { name: /email/i }).type(loginForm.email);
@@ -32,6 +34,7 @@ describe("smoke tests", () => {
     };
     cy.login();
     cy.visit("/");
+    cy.checkUrl("/");
 
     cy.findByRole("link", { name: /notes/i }).click();
     cy.findByText("No notes yet");
