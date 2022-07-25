@@ -28,14 +28,14 @@ declare global {
       cleanupUser: typeof cleanupUser;
 
       /**
-       * Checks to make sure you are on the correct url as your pathname
+       * Extends the standard visit command to wait for the page to load
        *
-       * @returns {typeof checkUrl}
+       * @returns {typeof visitAndCheck}
        * @memberof Chainable
        * @example
-       *    cy.checkUrl('/')
+       *    cy.visitAndCheck('/')
        */
-      checkUrl: typeof checkUrl;
+      visitAndCheck: typeof visitAndCheck;
     }
   }
 }
@@ -86,11 +86,11 @@ Cypress.Commands.add("cleanupUser", cleanupUser);
 // Also added custom types to avoid getting detached
 // https://github.com/cypress-io/cypress/issues/7306#issuecomment-1152752612
 // ===========================================================
-function checkUrl(url: string) {
-  console.log(cy.location);
+function visitAndCheck(url: string) {
+  cy.visit(url);
   cy.location("pathname").should("contain", url).wait(1000);
 }
-Cypress.Commands.add("checkUrl", checkUrl);
+Cypress.Commands.add("visitAndCheck", visitAndCheck);
 
 /*
 eslint
