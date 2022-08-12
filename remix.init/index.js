@@ -73,7 +73,7 @@ const updatePackageJson = ({ APP_NAME, isTypeScript, packageJson }) => {
           "vite-tsconfig-paths",
         ]),
     prisma: isTypeScript
-      ? prisma
+      ? { ...prisma, seed: prismaSeed }
       : {
           ...prisma,
           seed: prismaSeed
