@@ -46,9 +46,9 @@ const readFileIfNotTypeScript = (
   filePath,
   parseFunction = (result) => result
 ) =>
-  (isTypeScript ? Promise.resolve() : fs.readFile(filePath, "utf-8")).then(
-    parseFunction
-  );
+  isTypeScript
+    ? Promise.resolve()
+    : fs.readFile(filePath, "utf-8").then(parseFunction);
 
 const removeUnusedDependencies = (dependencies, unusedDependencies) =>
   Object.fromEntries(
