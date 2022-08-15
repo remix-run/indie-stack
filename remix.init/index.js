@@ -10,9 +10,9 @@ const YAML = require("yaml");
 const cleanupCypressFiles = (filesEntries) =>
   filesEntries.flatMap(([filePath, content]) => {
     const newContent = content
-      .replace("npx ts-node", "node")
-      .replace("create-user.ts", "create-user.js")
-      .replace("delete-user.ts", "delete-user.js");
+      .replace(new RegExp("npx ts-node", "g"), "node")
+      .replace(new RegExp("create-user.ts", "g"), "create-user.js")
+      .replace(new RegExp("delete-user.ts", "g"), "delete-user.js");
 
     return [fs.writeFile(filePath, newContent)];
   });
@@ -46,9 +46,9 @@ const readFileIfNotTypeScript = (
   filePath,
   parseFunction = (result) => result
 ) =>
-  (isTypeScript ? Promise.resolve() : fs.readFile(filePath, "utf-8")).then(
-    parseFunction
-  );
+  isTypeScript
+    ? Promise.resolve()
+    : fs.readFile(filePath, "utf-8").then(parseFunction);
 
 const removeUnusedDependencies = (dependencies, unusedDependencies) =>
   Object.fromEntries(
@@ -68,12 +68,9 @@ const updatePackageJson = ({ APP_NAME, isTypeScript, packageJson }) => {
     name: APP_NAME,
     devDependencies: isTypeScript
       ? devDependencies
-      : removeUnusedDependencies(devDependencies, [
-          "ts-node",
-          "vite-tsconfig-paths",
-        ]),
+      : removeUnusedDependencies(devDependencies, ["ts-node"]),
     prisma: isTypeScript
-      ? prisma
+      ? { ...prisma, seed: prismaSeed }
       : {
           ...prisma,
           seed: prismaSeed
