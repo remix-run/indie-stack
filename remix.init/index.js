@@ -8,8 +8,8 @@ const PackageJson = require("@npmcli/package-json");
 const semver = require("semver");
 const YAML = require("yaml");
 
-const cleanupCypressFiles = ({ filesEntries, isTypeScript, packageManager }) =>
-  filesEntries.flatMap(([filePath, content]) => {
+const cleanupCypressFiles = ({ fileEntries, isTypeScript, packageManager }) =>
+  fileEntries.flatMap(([filePath, content]) => {
     let newContent = content.replace(
       new RegExp("npx ts-node", "g"),
       isTypeScript ? `${packageManager.exec} ts-node` : "node"
@@ -125,6 +125,7 @@ const updatePackageJson = ({ APP_NAME, isTypeScript, packageJson }) => {
 
 const main = async ({ isTypeScript, packageManager, rootDirectory }) => {
   const pm = getPackageManagerCommand(packageManager);
+  const FILE_EXTENSION = isTypeScript ? "ts" : "js";
 
   const README_PATH = path.join(rootDirectory, "README.md");
   const FLY_TOML_PATH = path.join(rootDirectory, "fly.toml");
@@ -138,16 +139,22 @@ const main = async ({ isTypeScript, packageManager, rootDirectory }) => {
   );
   const DOCKERFILE_PATH = path.join(rootDirectory, "Dockerfile");
   const CYPRESS_SUPPORT_PATH = path.join(rootDirectory, "cypress", "support");
-  const CYPRESS_COMMANDS_PATH = path.join(CYPRESS_SUPPORT_PATH, "commands.js"); // We renamed this during `create-remix`
+  const CYPRESS_COMMANDS_PATH = path.join(
+    CYPRESS_SUPPORT_PATH,
+    `commands.${FILE_EXTENSION}`
+  );
   const CREATE_USER_COMMAND_PATH = path.join(
     CYPRESS_SUPPORT_PATH,
-    "create-user.js"
-  ); // We renamed this during `create-remix`
+    `create-user.${FILE_EXTENSION}`
+  );
   const DELETE_USER_COMMAND_PATH = path.join(
     CYPRESS_SUPPORT_PATH,
-    "delete-user.js"
-  ); // We renamed this during `create-remix`
-  const VITEST_CONFIG_PATH = path.join(rootDirectory, "vitest.config.js"); // We renamed this during `create-remix`
+    `delete-user.${FILE_EXTENSION}`
+  );
+  const VITEST_CONFIG_PATH = path.join(
+    rootDirectory,
+    `vitest.config.${FILE_EXTENSION}`
+  );
 
   const REPLACER = "indie-stack-template";
 
