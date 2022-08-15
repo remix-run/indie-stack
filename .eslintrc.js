@@ -1,6 +1,4 @@
-/**
- * @type {import('@types/eslint').Linter.BaseConfig}
- */
+/** @type {import('@types/eslint').Linter.BaseConfig} */
 module.exports = {
   extends: [
     "@remix-run/eslint-config",
@@ -17,7 +15,7 @@ module.exports = {
   // set the jest version.
   settings: {
     jest: {
-      version: 27,
+      version: 28,
     },
   },
 };
