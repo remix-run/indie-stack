@@ -45,7 +45,7 @@ export default function Index() {
                     </Link>
                     <Link
                       to="/login"
-                      className="flex items-center justify-center rounded-md bg-yellow-500 px-4 py-3 font-medium text-white hover:bg-yellow-600  "
+                      className="flex items-center justify-center rounded-md bg-yellow-500 px-4 py-3 font-medium text-white hover:bg-yellow-600"
                     >
                       Log In
                     </Link>
@@ -127,7 +127,7 @@ export default function Index() {
                 href={img.href}
                 className="flex h-16 w-32 justify-center p-1 grayscale transition hover:grayscale-0 focus:grayscale-0"
               >
-                <img alt={img.alt} src={img.src} />
+                <img alt={img.alt} src={img.src} className="object-contain" />
               </a>
             ))}
           </div>
