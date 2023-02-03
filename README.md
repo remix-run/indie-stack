@@ -90,7 +90,7 @@ Prior to your first deployment, you'll need to do a few things:
   fly apps create indie-stack-template-staging
   ```
 
-  > **Note:** Make sure this name matches the `app` set in your `fly.toml` file. Otherwise, you will not be able to deploy.
+  > **Note:** Make sure to replace `indie-stack-template` with the name of the `app` set in your `fly.toml` file. Otherwise, you will not be able to deploy. You will find the name at the beginning of your `fly.toml` file, such as `app=[NAME_OF_YOUR_APP]`
 
   - Initialize Git.
 
@@ -121,6 +121,15 @@ Prior to your first deployment, you'll need to do a few things:
   fly volumes create data --size 1 --app indie-stack-template
   fly volumes create data --size 1 --app indie-stack-template-staging
   ```
+
+- Increate the size of the memory for both your staging and production environments. This allows you to go around [a `Out of memory` issue when installing `prisma` on your `fly` virtual machines](https://github.com/remix-run/indie-stack/issues/156).
+Run the following:
+
+   ```sh
+   flyctl scale memory 512 --app indie-stack-template 
+   flyctl scale memory 512 --app indie-stack-template-staging
+   ```
+
 
 Now that everything is set up you can commit and push your changes to your repo. Every commit to your `main` branch will trigger a deployment to your production environment, and every commit to your `dev` branch will trigger a deployment to your staging environment.
 
