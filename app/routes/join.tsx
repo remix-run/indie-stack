@@ -1,20 +1,19 @@
 import type { ActionArgs, LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
-import * as React from "react";
-
-import { getUserId, createUserSession } from "~/session.server";
+import { useEffect, useRef } from "react";
 
 import { createUser, getUserByEmail } from "~/models/user.server";
+import { createUserSession, getUserId } from "~/session.server";
 import { safeRedirect, validateEmail } from "~/utils";
 
-export async function loader({ request }: LoaderArgs) {
+export const loader = async ({ request }: LoaderArgs) => {
   const userId = await getUserId(request);
   if (userId) return redirect("/");
   return json({});
-}
+};
 
-export async function action({ request }: ActionArgs) {
+export const action = async ({ request }: ActionArgs) => {
   const formData = await request.formData();
   const email = formData.get("email");
   const password = formData.get("password");
@@ -57,12 +56,12 @@ export async function action({ request }: ActionArgs) {
   const user = await createUser(email, password);
 
   return createUserSession({
+    redirectTo,
+    remember: false,
     request,
     userId: user.id,
-    remember: false,
-    redirectTo,
   });
-}
+};
 
 export const meta: V2_MetaFunction = () => [{ title: "Sign Up" }];
 
@@ -70,10 +69,10 @@ export default function Join() {
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") ?? undefined;
   const actionData = useActionData<typeof action>();
-  const emailRef = React.useRef<HTMLInputElement>(null);
-  const passwordRef = React.useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (actionData?.errors?.email) {
       emailRef.current?.focus();
     } else if (actionData?.errors?.password) {

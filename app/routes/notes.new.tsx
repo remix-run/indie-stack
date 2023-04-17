@@ -1,12 +1,12 @@
 import type { ActionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
-import * as React from "react";
+import { useEffect, useRef } from "react";
 
 import { createNote } from "~/models/note.server";
 import { requireUserId } from "~/session.server";
 
-export async function action({ request }: ActionArgs) {
+export const action = async ({ request }: ActionArgs) => {
   const userId = await requireUserId(request);
 
   const formData = await request.formData();
@@ -15,29 +15,29 @@ export async function action({ request }: ActionArgs) {
 
   if (typeof title !== "string" || title.length === 0) {
     return json(
-      { errors: { title: "Title is required", body: null } },
+      { errors: { body: null, title: "Title is required" } },
       { status: 400 }
     );
   }
 
   if (typeof body !== "string" || body.length === 0) {
     return json(
-      { errors: { title: null, body: "Body is required" } },
+      { errors: { body: "Body is required", title: null } },
       { status: 400 }
     );
   }
 
-  const note = await createNote({ title, body, userId });
+  const note = await createNote({ body, title, userId });
 
   return redirect(`/notes/${note.id}`);
-}
+};
 
 export default function NewNotePage() {
   const actionData = useActionData<typeof action>();
-  const titleRef = React.useRef<HTMLInputElement>(null);
-  const bodyRef = React.useRef<HTMLTextAreaElement>(null);
+  const titleRef = useRef<HTMLInputElement>(null);
+  const bodyRef = useRef<HTMLTextAreaElement>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (actionData?.errors?.title) {
       titleRef.current?.focus();
     } else if (actionData?.errors?.body) {
