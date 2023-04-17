@@ -235,6 +235,7 @@ const main = async ({ isTypeScript, packageManager, rootDirectory }) => {
     fs.rm(path.join(rootDirectory, ".github", "ISSUE_TEMPLATE"), {
       recursive: true,
     }),
+    fs.rm(path.join(rootDirectory, ".github", "workflows", "no-response.yml")),
     fs.rm(path.join(rootDirectory, ".github", "dependabot.yml")),
     fs.rm(path.join(rootDirectory, ".github", "PULL_REQUEST_TEMPLATE.md")),
   ];
