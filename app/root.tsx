@@ -8,12 +8,14 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import { cssBundleHref } from "@remix-run/css-bundle";
 
 import { getUser } from "~/session.server";
 import tailwindStylesheetUrl from "~/styles/tailwind.css";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: tailwindStylesheetUrl },
+  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
 ];
 
 export const loader = async ({ request }: LoaderArgs) => {
