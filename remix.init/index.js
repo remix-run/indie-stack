@@ -101,7 +101,13 @@ const updatePackageJson = ({ APP_NAME, isTypeScript, packageJson }) => {
   const {
     devDependencies,
     prisma: { seed: prismaSeed, ...prisma },
-    scripts: { "lint:repo": _repoLintScript, typecheck, validate, ...scripts },
+    scripts: {
+      "format:repo": _repoFormatScript,
+      "lint:repo": _repoLintScript,
+      typecheck,
+      validate,
+      ...scripts
+    },
   } = packageJson.content;
 
   packageJson.update({
@@ -239,6 +245,7 @@ const main = async ({ isTypeScript, packageManager, rootDirectory }) => {
     fs.rm(path.join(rootDirectory, ".github", "ISSUE_TEMPLATE"), {
       recursive: true,
     }),
+    fs.rm(path.join(rootDirectory, ".github", "workflows", "format-repo.yml")),
     fs.rm(path.join(rootDirectory, ".github", "workflows", "lint-repo.yml")),
     fs.rm(path.join(rootDirectory, ".github", "workflows", "no-response.yml")),
     fs.rm(path.join(rootDirectory, ".github", "dependabot.yml")),
