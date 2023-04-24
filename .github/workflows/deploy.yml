@@ -1,10 +1,11 @@
 name: 🚀 Deploy
+
 on:
   push:
     branches:
       - main
       - dev
-  pull_request: {}
+  pull_request:
 
 permissions:
   actions: write
@@ -24,12 +25,12 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          cache: npm
+          cache-dependency-path: ./package.json
+          node-version: 18
 
-      - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
-        with:
-          useLockFile: false
+      - name: 📥 Install deps
+        run: npm install
 
       - name: 🔬 Lint
         run: npm run lint
@@ -47,12 +48,12 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          cache: npm
+          cache-dependency-path: ./package.json
+          node-version: 18
 
-      - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
-        with:
-          useLockFile: false
+      - name: 📥 Install deps
+        run: npm install
 
       - name: 🔎 Type check
         run: npm run typecheck --if-present
@@ -70,12 +71,12 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          cache: npm
+          cache-dependency-path: ./package.json
+          node-version: 18
 
-      - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
-        with:
-          useLockFile: false
+      - name: 📥 Install deps
+        run: npm install
 
       - name: ⚡ Run vitest
         run: npm run test -- --coverage
@@ -96,12 +97,12 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          cache: npm
+          cache-dependency-path: ./package.json
+          node-version: 18
 
-      - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
-        with:
-          useLockFile: false
+      - name: 📥 Install deps
+        run: npm install
 
       - name: 🛠 Setup Database
         run: npx prisma migrate reset --force
