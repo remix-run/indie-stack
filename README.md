@@ -34,13 +34,16 @@ Click this button to create a [Gitpod](https://gitpod.io) workspace with the pro
 
 ## Development
 
-- This step only applies if you've opted out of having the CLI install dependencies for you:
+- First run this stack's `remix.init` script and commit the changes it makes to your project.
 
   ```sh
   npx remix init
+  git init # if you haven't already
+  git add .
+  git commit -m "Initialize project"
   ```
 
-- Initial setup: _If you just generated this project, this step has been done for you._
+- Initial setup:
 
   ```sh
   npm run setup

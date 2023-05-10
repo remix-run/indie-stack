@@ -209,10 +209,20 @@ const main = async ({ isTypeScript, packageManager, rootDirectory }) => {
   const prodToml = toml.parse(prodContent);
   prodToml.app = prodToml.app.replace(REPLACER, APP_NAME);
 
-  const newReadme = readme.replace(
-    new RegExp(escapeRegExp(REPLACER), "g"),
-    APP_NAME
-  );
+  const initInstructions = `
+- First run this stack's \`remix.init\` script and commit the changes it makes to your project.
+
+  \`\`\`sh
+  npx remix init
+  git init # if you haven't already
+  git add .
+  git commit -m "Initialize project"
+  \`\`\`
+`;
+
+  const newReadme = readme
+    .replace(new RegExp(escapeRegExp(REPLACER), "g"), APP_NAME)
+    .replace(initInstructions, "");
 
   const newDockerfile = pm.lockfile
     ? dockerfile.replace(
