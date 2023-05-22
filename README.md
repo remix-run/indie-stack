@@ -5,7 +5,7 @@
 Learn more about [Remix Stacks](https://remix.run/stacks).
 
 ```sh
-npx create-remix@latest --template remix-run/indie-stack
+npx create-remix@latest --template brandon-schabel/dream-pop-stack
 ```
 
 ## What's in the stack
