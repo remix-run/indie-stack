@@ -100,7 +100,6 @@ const removeUnusedDependencies = (dependencies, unusedDependencies) =>
 const updatePackageJson = ({ APP_NAME, isTypeScript, packageJson }) => {
   const {
     devDependencies,
-    prisma: { seed: prismaSeed, ...prisma },
     scripts: {
       "format:repo": _repoFormatScript,
       "lint:repo": _repoLintScript,
@@ -119,14 +118,6 @@ const updatePackageJson = ({ APP_NAME, isTypeScript, packageJson }) => {
         isTypeScript ? [] : ["ts-node"]
       )
     ),
-    prisma: isTypeScript
-      ? { ...prisma, seed: prismaSeed }
-      : {
-          ...prisma,
-          seed: prismaSeed
-            .replace("ts-node", "node")
-            .replace("seed.ts", "seed.js"),
-        },
     scripts: isTypeScript
       ? { ...scripts, typecheck, validate }
       : { ...scripts, validate: validate.replace(" typecheck", "") },

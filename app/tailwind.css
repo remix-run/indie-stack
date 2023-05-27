@@ -1,3 +1,4 @@
-@tailwind base;
+/* Mantine has it's own base styles */
+/* @tailwind base; */
 @tailwind components;
 @tailwind utilities;

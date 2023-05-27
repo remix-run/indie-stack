@@ -96,8 +96,8 @@ jobs:
       - name: 📥 Install deps
         run: npm install
 
-      - name: 🛠 Setup Database
-        run: npx prisma migrate reset --force
+      # - name: 🛠 Setup Database
+      #   run: npx prisma migrate reset --force
 
       - name: ⚙️ Build
         run: npm run build

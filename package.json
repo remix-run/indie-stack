@@ -1,5 +1,5 @@
 {
-  "name": "indie-stack-template",
+  "name": "dream-pop-stack-template",
   "private": true,
   "sideEffects": false,
   "scripts": {
@@ -9,7 +9,6 @@
     "format:repo": "npm run format && npm run lint:repo -- --fix",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "lint:repo": "npm run lint -- --config .eslintrc.repo.js",
-    "setup": "prisma generate && prisma migrate deploy && prisma db seed",
     "start": "remix-serve build",
     "start:mocks": "binode --require ./mocks -- @remix-run/serve:remix-serve build",
     "test": "vitest",
@@ -26,16 +25,30 @@
     "/public/build"
   ],
   "dependencies": {
-    "@prisma/client": "^4.12.0",
+    "@clerk/remix": "^2.6.2",
+    "@clerk/themes": "^1.7.2",
+    "@emotion/react": "^11.11.0",
+    "@emotion/server": "^11.11.0",
+    "@mantine/core": "^6.0.11",
+    "@mantine/dropzone": "^6.0.11",
+    "@mantine/hooks": "^6.0.11",
+    "@mantine/remix": "^6.0.11",
     "@remix-run/css-bundle": "*",
     "@remix-run/node": "*",
     "@remix-run/react": "*",
     "@remix-run/serve": "*",
+    "@remix-validated-form/with-zod": "^2.0.5",
+    "@tabler/icons": "^2.20.0",
     "bcryptjs": "^2.4.3",
+    "classnames": "^2.3.2",
     "isbot": "^3.6.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tiny-invariant": "^1.3.1"
+    "remix-validated-form": "^4.6.11",
+    "stripe": "^12.6.0",
+    "tiny-invariant": "^1.3.1",
+    "zod": "^3.21.4",
+    "zod-form-data": "^2.0.1"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
@@ -64,12 +77,12 @@
     "eslint-plugin-markdown": "^3.0.0",
     "eslint-plugin-prefer-let": "^3.0.1",
     "happy-dom": "^9.8.0",
+    "icons": "link:@types/@tabler/icons",
     "msw": "^1.2.1",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.4.22",
     "prettier": "2.8.7",
     "prettier-plugin-tailwindcss": "^0.2.7",
-    "prisma": "^4.12.0",
     "start-server-and-test": "^2.0.0",
     "tailwindcss": "^3.3.1",
     "ts-node": "^10.9.1",
@@ -81,8 +94,5 @@
   },
   "engines": {
     "node": ">=14"
-  },
-  "prisma": {
-    "seed": "ts-node --require tsconfig-paths/register prisma/seed.ts"
   }
 }

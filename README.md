@@ -15,7 +15,6 @@ npx create-remix@latest --template brandon-schabel/dream-pop-stack
 - Healthcheck endpoint for [Fly backups region fallbacks](https://fly.io/docs/reference/configuration/#services-http_checks)
 - [GitHub Actions](https://github.com/features/actions) for deploy on merge to production and staging environments
 - Email/Password Authentication with [cookie-based sessions](https://remix.run/utils/sessions#md-createcookiesessionstorage)
-- Database ORM with [Prisma](https://prisma.io)
 - Styling with [Tailwind](https://tailwindcss.com/)
 - End-to-end testing with [Cypress](https://cypress.io)
 - Local third party request mocking with [MSW](https://mswjs.io)
@@ -64,11 +63,8 @@ The database seed script creates a new user with some data you can use to get st
 
 ### Relevant code:
 
-This is a pretty simple note-taking app, but it's a good example of how you can build a full stack app with Prisma and Remix. The main functionality is creating users, logging in and out, and creating and deleting notes.
+This is a pretty simple note-taking app, but it's a good example of how you can build a full stack app with Remix. The main functionality is creating users, logging in and out
 
-- creating users, and logging in and out [./app/models/user.server.ts](./app/models/user.server.ts)
-- user sessions, and verifying them [./app/session.server.ts](./app/session.server.ts)
-- creating, and deleting notes [./app/models/note.server.ts](./app/models/note.server.ts)
 
 ## Deployment
 
@@ -112,8 +108,8 @@ Prior to your first deployment, you'll need to do a few things:
 - Add a `SESSION_SECRET` to your fly app secrets, to do this you can run the following commands:
 
   ```sh
-  fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app indie-stack-template
-  fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app indie-stack-template-staging
+  fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app dream-pop-stack-template
+  fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app dream-pop-stack-template-taging
   ```
 
   If you don't have openssl installed, you can also use [1Password](https://1password.com/password-generator) to generate a random secret, just replace `$(openssl rand -hex 32)` with the generated secret.
@@ -121,8 +117,8 @@ Prior to your first deployment, you'll need to do a few things:
 - Create a persistent volume for the sqlite database for both your staging and production environments. Run the following:
 
   ```sh
-  fly volumes create data --size 1 --app indie-stack-template
-  fly volumes create data --size 1 --app indie-stack-template-staging
+  fly volumes create data --size 1 --app dream-pop-stack-template
+  fly volumes create data --size 1 --app dream-pop-stack-template-staging
   ```
 
 Now that everything is set up you can commit and push your changes to your repo. Every commit to your `main` branch will trigger a deployment to your production environment, and every commit to your `dev` branch will trigger a deployment to your staging environment.
