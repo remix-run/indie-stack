@@ -20,7 +20,6 @@
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "typeRoots": ["../types", "../node_modules/@types"],
 
     "paths": {
       "~/*": ["../app/*"]
