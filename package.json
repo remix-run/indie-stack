@@ -1,5 +1,5 @@
 {
-  "name": "indie-stack-template",
+  "name": "paystack-remix-template",
   "private": true,
   "sideEffects": false,
   "scripts": {
@@ -7,10 +7,7 @@
     "dev": "remix dev -c \"npm run dev:serve\"",
     "dev:serve": "binode --require ./mocks -- @remix-run/serve:remix-serve ./build",
     "format": "prettier --write .",
-    "format:repo": "npm run format && npm run lint:repo -- --fix",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
-    "lint:repo": "npm run lint -- --config .eslintrc.repo.js",
-    "setup": "prisma generate && prisma migrate deploy && prisma db seed",
     "start": "remix-serve build",
     "start:mocks": "binode --require ./mocks -- @remix-run/serve:remix-serve build",
     "test": "vitest",
@@ -20,14 +17,7 @@
     "typecheck": "tsc && tsc -p cypress",
     "validate": "run-p \"test -- --run\" lint typecheck test:e2e:run"
   },
-  "prettier": {},
-  "eslintIgnore": [
-    "/node_modules",
-    "/build",
-    "/public/build"
-  ],
   "dependencies": {
-    "@prisma/client": "^4.16.1",
     "@remix-run/css-bundle": "*",
     "@remix-run/node": "*",
     "@remix-run/react": "*",
@@ -60,16 +50,12 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-cypress": "^2.13.3",
     "eslint-plugin-markdown": "^3.0.0",
-    "eslint-plugin-prefer-let": "^3.0.1",
     "happy-dom": "^9.20.3",
     "msw": "^1.2.2",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.4.24",
     "prettier": "2.8.8",
-    "prettier-plugin-tailwindcss": "^0.3.0",
-    "prisma": "^4.16.1",
     "start-server-and-test": "^2.0.0",
-    "tailwindcss": "^3.3.2",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.1.3",
@@ -79,8 +65,5 @@
   },
   "engines": {
     "node": ">=14"
-  },
-  "prisma": {
-    "seed": "ts-node --require tsconfig-paths/register prisma/seed.ts"
   }
 }
