@@ -10,6 +10,7 @@ npx create-remix@latest --template PaystackHQ/remix-template
 
 - [GitHub Actions](https://github.com/features/actions) for deploy on merge to production and staging environments
 - End-to-end testing with [Cypress](https://cypress.io)
+- Library of UI components from [Pax](https://github.com/PaystackHQ/pax)
 - Local third party request mocking with [MSW](https://mswjs.io)
 - Unit testing with [Vitest](https://vitest.dev) and [Testing Library](https://testing-library.com)
 - Code formatting with [Prettier](https://prettier.io)

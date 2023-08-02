@@ -5,14 +5,33 @@
  */
 
 import { RemixBrowser } from "@remix-run/react";
-import { startTransition, StrictMode } from "react";
+import { startTransition, StrictMode, useState, useCallback, type ReactNode } from "react";
 import { hydrateRoot } from "react-dom/client";
+
+import ClientStyleContext from "~/styles/client.context";
+import { getCssText } from "@paystackhq/pax";
+
+function ClientCacheProvider({ children }: { children: ReactNode }) {
+  const [sheet, setSheet] = useState(getCssText());
+
+  const reset = useCallback(() => {
+    setSheet(getCssText());
+  }, []);
+
+  return (
+    <ClientStyleContext.Provider value={{ reset, sheet }}>
+      {children}
+    </ClientStyleContext.Provider>
+  );
+}
 
 startTransition(() => {
   hydrateRoot(
     document,
     <StrictMode>
-      <RemixBrowser />
+      <ClientCacheProvider>
+        <RemixBrowser />
+      </ClientCacheProvider>
     </StrictMode>
   );
 });
