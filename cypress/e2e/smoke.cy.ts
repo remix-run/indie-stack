@@ -1,5 +1,6 @@
-describe("smoke tests", () => {
-  it("works", () => {
-    expect(1+1).toEqual(2)
+describe('smoke tests', () => {
+  it('works', () => {
+    cy.visit('/');
+    cy.findByText(/welcome to remix!/i);
   });
 });
