@@ -6,7 +6,7 @@ Create a Remix application using this template by running:
 npx create-remix@latest --template PaystackHQ/remix-template
 ```
 
-## What's in the stack
+## What's in the template
 
 - [GitHub Actions](https://github.com/features/actions) for deploy on merge to production and staging environments
 - End-to-end testing with [Cypress](https://cypress.io)

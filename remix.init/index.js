@@ -203,7 +203,6 @@ const main = async ({ isTypeScript, packageManager, rootDirectory }) => {
       path.join(rootDirectory, ".gitignore")
     ),
     fs.rm(path.join(rootDirectory, ".github", "dependabot.yml")),
-    fs.rm(path.join(rootDirectory, ".github", "PULL_REQUEST_TEMPLATE.md")),
     fs.rm(path.join(rootDirectory, "LICENSE.md")),
   ];
 

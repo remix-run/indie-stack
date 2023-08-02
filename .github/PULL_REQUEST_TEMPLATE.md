@@ -1,14 +1,21 @@
-<!--
+# Pull request template
 
-👋 Hey, thanks for your interest in contributing to Remix!
+Please follow the template instructions. But also take the time to delete the irrelevant parts from this template so that there's no clutter.
 
-Our bandwidth on maintaining these stacks is limited. As a team, we're currently
-focusing our efforts on Remix itself. The good news is you can fork and adjust
-this stack however you'd like and start using it today as a custom stack. Learn
-more from [the Remix Stacks docs](https://remix.run/stacks).
+## Describe the PR
 
-You're still welcome to make a PR. We can't promise a timely response, but
-hopefully when we have the bandwidth to work on these stacks again we can take
-a look. Thanks!
+- A clear and concise summary of what this PR is about and the technical approach it takes
+- Link to the issue that requires this PR
+- Explicitly explain if this is a backwards incompatible or breaking change
+- Add extra information and screenshots if you believe it adds value
+- Mark this as a Draft PR if you just want to get early feedback on your approach
+- Use the `do not merge` label if this is no longer a draft, you want approvals, but don't want it to be merged immediately, remove the label once that's done
+- If any of the sign off items are unchecked, please draw special attention to it!
 
--->
+## Sign off
+
+- [ ] Code conforms to the [Frontend Coding Style Guide](https://www.notion.so/paystack/Frontend-Coding-Style-Guide-5918f0348a514e57a742727c164ddb6b)
+- [ ] Added test(s)
+- [ ] Merged this branch into `dev`
+- [ ] Added sufficient inline comments and/or added to DEV_DOCS.md if needed
+- [ ] Can be safely merged to master and deployed to production pending pr approval
