@@ -3,7 +3,7 @@
 Create a Remix application using this template by running:
 
 ```sh
-npx create-remix@latest --template PaystackHQ/remix-template
+npx create-remix@latest --template PaystackHQ/remix-app-template
 ```
 
 ## What's in the template
