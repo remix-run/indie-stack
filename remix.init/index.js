@@ -12,7 +12,7 @@ const cleanupCypressFiles = ({ fileEntries, isTypeScript, packageManager }) =>
   fileEntries.flatMap(([filePath, content]) => {
     let newContent = content.replace(
       new RegExp("npx ts-node", "g"),
-      isTypeScript ? `${packageManager.exec} ts-node` : "node"
+      isTypeScript ? `${packageManager.exec} ts-node` : "node",
     );
 
     if (!isTypeScript) {
@@ -27,7 +27,7 @@ const cleanupCypressFiles = ({ fileEntries, isTypeScript, packageManager }) =>
 const cleanupDeployWorkflow = (deployWorkflow, deployWorkflowPath) => {
   delete deployWorkflow.jobs.typecheck;
   deployWorkflow.jobs.deploy.needs = deployWorkflow.jobs.deploy.needs.filter(
-    (need) => need !== "typecheck"
+    (need) => need !== "typecheck",
   );
 
   return [fs.writeFile(deployWorkflowPath, YAML.stringify(deployWorkflow))];
@@ -36,7 +36,7 @@ const cleanupDeployWorkflow = (deployWorkflow, deployWorkflowPath) => {
 const cleanupVitestConfig = (vitestConfig, vitestConfigPath) => {
   const newVitestConfig = vitestConfig.replace(
     "setup-test-env.ts",
-    "setup-test-env.js"
+    "setup-test-env.js",
   );
 
   return [fs.writeFile(vitestConfigPath, newVitestConfig)];
@@ -73,7 +73,7 @@ const getPackageManagerCommand = (packageManager) =>
       lockfile: "yarn.lock",
       run: (script, args) => `yarn ${script} ${args || ""}`,
     }),
-  }[packageManager]());
+  })[packageManager]();
 
 const getPackageManagerVersion = (packageManager) =>
   // Copied over from https://github.com/nrwl/nx/blob/bd9b33eaef0393d01f747ea9a2ac5d2ca1fb87c6/packages/nx/src/utils/package-manager.ts#L105-L114
@@ -84,7 +84,7 @@ const getRandomString = (length) => crypto.randomBytes(length).toString("hex");
 const readFileIfNotTypeScript = (
   isTypeScript,
   filePath,
-  parseFunction = (result) => result
+  parseFunction = (result) => result,
 ) =>
   isTypeScript
     ? Promise.resolve()
@@ -93,8 +93,8 @@ const readFileIfNotTypeScript = (
 const removeUnusedDependencies = (dependencies, unusedDependencies) =>
   Object.fromEntries(
     Object.entries(dependencies).filter(
-      ([key]) => !unusedDependencies.includes(key)
-    )
+      ([key]) => !unusedDependencies.includes(key),
+    ),
   );
 
 const updatePackageJson = ({ APP_NAME, isTypeScript, packageJson }) => {
@@ -116,8 +116,8 @@ const updatePackageJson = ({ APP_NAME, isTypeScript, packageJson }) => {
       devDependencies,
       // packages that are only used for linting the repo
       ["eslint-plugin-markdown", "eslint-plugin-prefer-let"].concat(
-        isTypeScript ? [] : ["ts-node"]
-      )
+        isTypeScript ? [] : ["ts-node"],
+      ),
     ),
     prisma: isTypeScript
       ? { ...prisma, seed: prismaSeed }
@@ -145,25 +145,25 @@ const main = async ({ isTypeScript, packageManager, rootDirectory }) => {
     rootDirectory,
     ".github",
     "workflows",
-    "deploy.yml"
+    "deploy.yml",
   );
   const DOCKERFILE_PATH = path.join(rootDirectory, "Dockerfile");
   const CYPRESS_SUPPORT_PATH = path.join(rootDirectory, "cypress", "support");
   const CYPRESS_COMMANDS_PATH = path.join(
     CYPRESS_SUPPORT_PATH,
-    `commands.${FILE_EXTENSION}`
+    `commands.${FILE_EXTENSION}`,
   );
   const CREATE_USER_COMMAND_PATH = path.join(
     CYPRESS_SUPPORT_PATH,
-    `create-user.${FILE_EXTENSION}`
+    `create-user.${FILE_EXTENSION}`,
   );
   const DELETE_USER_COMMAND_PATH = path.join(
     CYPRESS_SUPPORT_PATH,
-    `delete-user.${FILE_EXTENSION}`
+    `delete-user.${FILE_EXTENSION}`,
   );
   const VITEST_CONFIG_PATH = path.join(
     rootDirectory,
-    `vitest.config.${FILE_EXTENSION}`
+    `vitest.config.${FILE_EXTENSION}`,
   );
 
   const REPLACER = "indie-stack-template";
@@ -195,7 +195,7 @@ const main = async ({ isTypeScript, packageManager, rootDirectory }) => {
     fs.readFile(CREATE_USER_COMMAND_PATH, "utf-8"),
     fs.readFile(DELETE_USER_COMMAND_PATH, "utf-8"),
     readFileIfNotTypeScript(isTypeScript, DEPLOY_WORKFLOW_PATH, (s) =>
-      YAML.parse(s)
+      YAML.parse(s),
     ),
     readFileIfNotTypeScript(isTypeScript, VITEST_CONFIG_PATH),
     PackageJson.load(rootDirectory),
@@ -203,7 +203,7 @@ const main = async ({ isTypeScript, packageManager, rootDirectory }) => {
 
   const newEnv = env.replace(
     /^SESSION_SECRET=.*$/m,
-    `SESSION_SECRET="${getRandomString(16)}"`
+    `SESSION_SECRET="${getRandomString(16)}"`,
   );
 
   const prodToml = toml.parse(prodContent);
@@ -227,7 +227,7 @@ const main = async ({ isTypeScript, packageManager, rootDirectory }) => {
   const newDockerfile = pm.lockfile
     ? dockerfile.replace(
         new RegExp(escapeRegExp("ADD package.json"), "g"),
-        `ADD package.json ${pm.lockfile}`
+        `ADD package.json ${pm.lockfile}`,
       )
     : dockerfile;
 
@@ -250,7 +250,7 @@ const main = async ({ isTypeScript, packageManager, rootDirectory }) => {
     packageJson.save(),
     fs.copyFile(
       path.join(rootDirectory, "remix.init", "gitignore"),
-      path.join(rootDirectory, ".gitignore")
+      path.join(rootDirectory, ".gitignore"),
     ),
     fs.rm(path.join(rootDirectory, ".github", "ISSUE_TEMPLATE"), {
       recursive: true,
@@ -266,11 +266,11 @@ const main = async ({ isTypeScript, packageManager, rootDirectory }) => {
 
   if (!isTypeScript) {
     fileOperationPromises.push(
-      ...cleanupDeployWorkflow(deployWorkflow, DEPLOY_WORKFLOW_PATH)
+      ...cleanupDeployWorkflow(deployWorkflow, DEPLOY_WORKFLOW_PATH),
     );
 
     fileOperationPromises.push(
-      ...cleanupVitestConfig(vitestConfig, VITEST_CONFIG_PATH)
+      ...cleanupVitestConfig(vitestConfig, VITEST_CONFIG_PATH),
     );
   }
 
@@ -287,7 +287,7 @@ const main = async ({ isTypeScript, packageManager, rootDirectory }) => {
     `Setup is complete. You're now ready to rock and roll 🤘
 
 Start development with \`${pm.run("dev")}\`
-    `.trim()
+    `.trim(),
   );
 };
 
