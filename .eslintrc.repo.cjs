@@ -6,7 +6,7 @@ const WARN = 1;
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
   extends: [
-    "./.eslintrc.js",
+    "./.eslintrc.cjs",
     "@remix-run/eslint-config/internal",
     "plugin:markdown/recommended",
   ],
