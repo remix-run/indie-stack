@@ -5,14 +5,14 @@
   "scripts": {
     "build": "remix build",
     "dev": "remix dev -c \"npm run dev:serve\"",
-    "dev:serve": "binode --require ./mocks -- @remix-run/serve:remix-serve ./build",
+    "dev:serve": "binode --require ./mocks -- @remix-run/serve:remix-serve ./build/index.js",
     "format": "prettier --write .",
     "format:repo": "npm run format && npm run lint:repo -- --fix",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "lint:repo": "npm run lint -- --config .eslintrc.repo.js",
     "setup": "prisma generate && prisma migrate deploy && prisma db seed",
-    "start": "remix-serve build",
-    "start:mocks": "binode --require ./mocks -- @remix-run/serve:remix-serve build",
+    "start": "remix-serve ./build/index.js",
+    "start:mocks": "binode --require ./mocks -- @remix-run/serve:remix-serve ./build/index.js",
     "test": "vitest",
     "test:e2e:dev": "start-server-and-test dev http://localhost:3000 \"npx cypress open\"",
     "pretest:e2e:run": "npm run build",
@@ -78,7 +78,7 @@
     "vitest": "^0.34.2"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0"
   },
   "prisma": {
     "seed": "ts-node --require tsconfig-paths/register prisma/seed.ts"
