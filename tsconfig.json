@@ -2,7 +2,7 @@
   "exclude": ["./cypress", "./cypress.config.ts"],
   "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"],
   "compilerOptions": {
-    "lib": ["DOM", "DOM.Iterable", "ES2019"],
+    "lib": ["DOM", "DOM.Iterable", "ES2020"],
     "types": ["vitest/globals"],
     "isolatedModules": true,
     "esModuleInterop": true,
@@ -10,7 +10,7 @@
     "module": "CommonJS",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "target": "ES2019",
+    "target": "ES2020",
     "strict": true,
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
