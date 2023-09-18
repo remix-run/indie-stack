@@ -190,7 +190,7 @@ const main = async ({ packageManager, rootDirectory }) => {
     fs.rm(path.join(rootDirectory, ".github", "workflows", "no-response.yml")),
     fs.rm(path.join(rootDirectory, ".github", "dependabot.yml")),
     fs.rm(path.join(rootDirectory, ".github", "PULL_REQUEST_TEMPLATE.md")),
-    fs.rm(path.join(rootDirectory, ".eslintrc.repo.js")),
+    fs.rm(path.join(rootDirectory, ".eslintrc.repo.cjs")),
     fs.rm(path.join(rootDirectory, "LICENSE.md")),
   ]);
 
