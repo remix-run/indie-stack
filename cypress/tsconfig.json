@@ -15,7 +15,7 @@
     "types": ["node", "cypress", "@testing-library/cypress"],
     "esModuleInterop": true,
     "jsx": "react-jsx",
-    "moduleResolution": "Bundler",
+    "moduleResolution": "node",
     "target": "ES2020",
     "strict": true,
     "skipLibCheck": true,

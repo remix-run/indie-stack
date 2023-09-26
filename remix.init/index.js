@@ -88,10 +88,8 @@ const main = async ({ packageManager, rootDirectory }) => {
   const pm = getPackageManagerCommand(packageManager);
 
   const README_PATH = path.join(rootDirectory, 'README.md');
-  const FLY_TOML_PATH = path.join(rootDirectory, 'fly.toml');
   const EXAMPLE_ENV_PATH = path.join(rootDirectory, '.env.example');
   const ENV_PATH = path.join(rootDirectory, '.env');
-  const DOCKERFILE_PATH = path.join(rootDirectory, 'Dockerfile');
   const CYPRESS_SUPPORT_PATH = path.join(rootDirectory, 'cypress', 'support');
   const CYPRESS_COMMANDS_PATH = path.join(CYPRESS_SUPPORT_PATH, 'commands.ts');
   const CREATE_USER_COMMAND_PATH = path.join(
@@ -116,16 +114,13 @@ const main = async ({ packageManager, rootDirectory }) => {
     prodContent,
     readme,
     env,
-    dockerfile,
     cypressCommands,
     createUserCommand,
     deleteUserCommand,
     packageJson,
   ] = await Promise.all([
-    fs.readFile(FLY_TOML_PATH, 'utf-8'),
     fs.readFile(README_PATH, 'utf-8'),
     fs.readFile(EXAMPLE_ENV_PATH, 'utf-8'),
-    fs.readFile(DOCKERFILE_PATH, 'utf-8'),
     fs.readFile(CYPRESS_COMMANDS_PATH, 'utf-8'),
     fs.readFile(CREATE_USER_COMMAND_PATH, 'utf-8'),
     fs.readFile(DELETE_USER_COMMAND_PATH, 'utf-8'),
@@ -155,20 +150,11 @@ const main = async ({ packageManager, rootDirectory }) => {
     .replace(new RegExp(escapeRegExp(REPLACER), 'g'), APP_NAME)
     .replace(initInstructions, '');
 
-  const newDockerfile = pm.lockfile
-    ? dockerfile.replace(
-        new RegExp(escapeRegExp('ADD package.json'), 'g'),
-        `ADD package.json ${pm.lockfile}`,
-      )
-    : dockerfile;
-
   updatePackageJson({ APP_NAME, packageJson });
 
   await Promise.all([
-    fs.writeFile(FLY_TOML_PATH, toml.stringify(prodToml)),
     fs.writeFile(README_PATH, newReadme),
     fs.writeFile(ENV_PATH, newEnv),
-    fs.writeFile(DOCKERFILE_PATH, newDockerfile),
     ...cleanupCypressFiles({
       fileEntries: [
         [CYPRESS_COMMANDS_PATH, cypressCommands],
