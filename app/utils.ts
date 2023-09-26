@@ -1,7 +1,7 @@
-import { useMatches } from "@remix-run/react";
-import { useMemo } from "react";
+import { useMatches } from '@remix-run/react';
+import { useMemo } from 'react';
 
-const DEFAULT_REDIRECT = "/";
+const DEFAULT_REDIRECT = '/';
 
 /**
  * This should be used any time the redirect path is user-provided
@@ -12,13 +12,13 @@ const DEFAULT_REDIRECT = "/";
  */
 export function safeRedirect(
   to: FormDataEntryValue | string | null | undefined,
-  defaultRedirect: string = DEFAULT_REDIRECT
+  defaultRedirect: string = DEFAULT_REDIRECT,
 ) {
-  if (!to || typeof to !== "string") {
+  if (!to || typeof to !== 'string') {
     return defaultRedirect;
   }
 
-  if (!to.startsWith("/") || to.startsWith("//")) {
+  if (!to.startsWith('/') || to.startsWith('//')) {
     return defaultRedirect;
   }
 
@@ -32,12 +32,12 @@ export function safeRedirect(
  * @returns {JSON|undefined} The router data or undefined if not found
  */
 export function useMatchesData(
-  id: string
+  id: string,
 ): Record<string, unknown> | undefined {
   const matchingRoutes = useMatches();
   const route = useMemo(
     () => matchingRoutes.find((route) => route.id === id),
-    [matchingRoutes, id]
+    [matchingRoutes, id],
   );
-  return route?.data;
+  return route?.data as Record<string, unknown>;
 }
