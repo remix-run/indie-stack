@@ -109,7 +109,6 @@ const main = async ({ packageManager, rootDirectory }) => {
     `SESSION_SECRET="${getRandomString(16)}"`,
   );
 
-  //replacer
   const initInstructions = `
 - First run this stack's \`remix.init\` script and commit the changes it makes to your project.
 
