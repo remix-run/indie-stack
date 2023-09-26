@@ -3,7 +3,6 @@ const crypto = require('node:crypto');
 const fs = require('node:fs/promises');
 const path = require('node:path');
 
-const toml = require('@iarna/toml');
 const PackageJson = require('@npmcli/package-json');
 const semver = require('semver');
 
@@ -98,22 +97,19 @@ const main = async ({ packageManager, rootDirectory }) => {
     // get rid of anything that's not allowed in an app name
     .replace(/[^a-zA-Z0-9-_]/g, '-');
 
-  const [prodContent, readme, env, cypressCommands, packageJson] =
-    await Promise.all([
-      fs.readFile(README_PATH, 'utf-8'),
-      fs.readFile(EXAMPLE_ENV_PATH, 'utf-8'),
-      fs.readFile(CYPRESS_COMMANDS_PATH, 'utf-8'),
-      PackageJson.load(rootDirectory),
-    ]);
+  const [readme, env, cypressCommands, packageJson] = await Promise.all([
+    fs.readFile(README_PATH, 'utf-8'),
+    fs.readFile(EXAMPLE_ENV_PATH, 'utf-8'),
+    fs.readFile(CYPRESS_COMMANDS_PATH, 'utf-8'),
+    PackageJson.load(rootDirectory),
+  ]);
 
   const newEnv = env.replace(
     /^SESSION_SECRET=.*$/m,
     `SESSION_SECRET="${getRandomString(16)}"`,
   );
 
-  const prodToml = toml.parse(prodContent);
-  prodToml.app = prodToml.app.replace(REPLACER, APP_NAME);
-
+  //replacer
   const initInstructions = `
 - First run this stack's \`remix.init\` script and commit the changes it makes to your project.
 
