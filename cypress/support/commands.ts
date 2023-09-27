@@ -90,6 +90,8 @@ function visitAndCheck(url: string, waitTime: number = 1000) {
   cy.location("pathname").should("contain", url).wait(waitTime);
 }
 
-Cypress.Commands.add("login", login);
-Cypress.Commands.add("cleanupUser", cleanupUser);
-Cypress.Commands.add("visitAndCheck", visitAndCheck);
+export function registerCommands() {
+  Cypress.Commands.add("login", login);
+  Cypress.Commands.add("cleanupUser", cleanupUser);
+  Cypress.Commands.add("visitAndCheck", visitAndCheck);
+}
