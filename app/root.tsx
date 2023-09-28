@@ -1,3 +1,4 @@
+import { getCssText } from '@paystackhq/pax';
 import { cssBundleHref } from '@remix-run/css-bundle';
 import type { LinksFunction, LoaderFunctionArgs } from '@remix-run/node';
 import { json } from '@remix-run/node';
@@ -9,9 +10,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from '@remix-run/react';
-import { useContext, useEffect, type ReactNode } from 'react';
-
-import ClientStyleContext from '~/styles/client.context';
+import { type ReactNode } from 'react';
 
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
@@ -22,14 +21,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 const Document = ({ children }: { children: ReactNode }) => {
-  const clientStyleData = useContext(ClientStyleContext);
-
-  // Only executed on client
-  useEffect(() => {
-    // reset cache to re-apply global styles
-    clientStyleData.reset();
-  }, [clientStyleData]);
-
   return (
     <html lang="en">
       <head>
@@ -39,7 +30,7 @@ const Document = ({ children }: { children: ReactNode }) => {
         <Links />
         <style
           id="stitches"
-          dangerouslySetInnerHTML={{ __html: clientStyleData.sheet }}
+          dangerouslySetInnerHTML={{ __html: getCssText() }}
           suppressHydrationWarning
         />
       </head>
