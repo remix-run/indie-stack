@@ -95,6 +95,7 @@ export default function LoginPage() {
                 ref={emailRef}
                 id="email"
                 required
+                // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus={true}
                 name="email"
                 type="email"
@@ -160,7 +161,7 @@ export default function LoginPage() {
               </label>
             </div>
             <div className="text-center text-sm text-gray-500">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link
                 className="text-blue-500 underline"
                 to={{

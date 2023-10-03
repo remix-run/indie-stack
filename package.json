@@ -25,6 +25,7 @@
     "/public/build"
   ],
   "dependencies": {
+    "@epic-web/remember": "^1.0.2",
     "@prisma/client": "^4.16.2",
     "@remix-run/css-bundle": "*",
     "@remix-run/node": "*",
