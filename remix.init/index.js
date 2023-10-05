@@ -56,6 +56,21 @@ const getPackageManagerVersion = (packageManager) =>
 
 const getRandomString = (length) => crypto.randomBytes(length).toString("hex");
 
+const updatePackageJson = ({ APP_NAME, packageJson }) => {
+  const {
+    scripts: {
+      // eslint-disable-next-line no-unused-vars
+      "format:repo": _repoFormatScript,
+      ...scripts
+    },
+  } = packageJson.content;
+
+  packageJson.update({
+    name: APP_NAME,
+    scripts,
+  });
+};
+
 const main = async ({ packageManager, rootDirectory }) => {
   const pm = getPackageManagerCommand(packageManager);
 
@@ -134,6 +149,8 @@ const main = async ({ packageManager, rootDirectory }) => {
       )
     : dockerfile;
 
+  updatePackageJson({ APP_NAME, packageJson });
+
   await Promise.all([
     fs.writeFile(FLY_TOML_PATH, toml.stringify(prodToml)),
     fs.writeFile(README_PATH, newReadme),
@@ -165,7 +182,7 @@ const main = async ({ packageManager, rootDirectory }) => {
 
   execSync(pm.run("setup"), { cwd: rootDirectory, stdio: "inherit" });
 
-  execSync(pm.run("format", "--loglevel warn"), {
+  execSync(pm.run("format", "--log-level warn"), {
     cwd: rootDirectory,
     stdio: "inherit",
   });
