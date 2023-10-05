@@ -11,7 +11,9 @@ const cleanupCypressFiles = ({ fileEntries, packageManager }) =>
   fileEntries.flatMap(([filePath, content]) => {
     const newContent = content.replace(
       new RegExp("npx ts-node", "g"),
-      `${packageManager.exec} ts-node`,
+      packageManager.tsNative
+        ? packageManager.exec
+        : `${packageManager.exec} ts-node`,
     );
 
     return [fs.writeFile(filePath, newContent)];
@@ -48,6 +50,12 @@ const getPackageManagerCommand = (packageManager) =>
       lockfile: "yarn.lock",
       run: (script, args) => `yarn ${script} ${args || ""}`,
     }),
+    bun: () => ({
+      exec: "bun",
+      tsNative: true,
+      lockfile: "bun.lockb",
+      run: (script, args) => `bun ${script} ${args || ""}`,
+    }),
   })[packageManager]();
 
 const getPackageManagerVersion = (packageManager) =>
@@ -56,18 +64,45 @@ const getPackageManagerVersion = (packageManager) =>
 
 const getRandomString = (length) => crypto.randomBytes(length).toString("hex");
 
-const updatePackageJson = ({ APP_NAME, packageJson }) => {
+const updatePackageJson = ({ APP_NAME, packageJson, packageManager }) => {
   const {
     scripts: {
       // eslint-disable-next-line no-unused-vars
       "format:repo": _repoFormatScript,
       ...scripts
     },
+    devDependencies: { ...devDependencies },
+    prisma: { ...prisma },
   } = packageJson.content;
+
+  if (packageManager.tsNative) {
+    delete devDependencies["ts-node"];
+  }
+
+  const updateScripts = (scripts) => {
+    const run = packageManager.run("", "").trim();
+    const npxTsnode = packageManager.tsNative
+      ? packageManager.exec
+      : `${packageManager.exec} ts-node`;
+    const tsnode = packageManager.tsNative ? packageManager.exec : "ts-node";
+
+    return Object.fromEntries(
+      Object.entries(scripts).map(([scriptName, script]) => [
+        scriptName,
+        script
+          .replace("npx ts-node", npxTsnode)
+          .replace("ts-node", tsnode)
+          .replace("npx", packageManager.exec)
+          .replace("npm run", run),
+      ]),
+    );
+  };
 
   packageJson.update({
     name: APP_NAME,
-    scripts,
+    devDependencies,
+    scripts: updateScripts(scripts),
+    prisma: updateScripts(prisma),
   });
 };
 
@@ -149,7 +184,7 @@ const main = async ({ packageManager, rootDirectory }) => {
       )
     : dockerfile;
 
-  updatePackageJson({ APP_NAME, packageJson });
+  updatePackageJson({ APP_NAME, packageJson, packageManager: pm });
 
   await Promise.all([
     fs.writeFile(FLY_TOML_PATH, toml.stringify(prodToml)),
