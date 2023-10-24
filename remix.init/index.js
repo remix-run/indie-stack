@@ -11,7 +11,7 @@ const cleanupCypressFiles = ({ fileEntries, packageManager }) =>
   fileEntries.flatMap(([filePath, content]) => {
     const newContent = content.replace(
       new RegExp("npx ts-node", "g"),
-      `${packageManager.exec} ts-node`,
+      packageManager.name === "bun" ? "bun" : `${packageManager.exec} ts-node`,
     );
 
     return [fs.writeFile(filePath, newContent)];
@@ -27,11 +27,13 @@ const getPackageManagerCommand = (packageManager) =>
     bun: () => ({
       exec: "bunx",
       lockfile: "bun.lockb",
+      name: "bun",
       run: (script, args) => `bun run ${script} ${args || ""}`,
     }),
     npm: () => ({
       exec: "npx",
       lockfile: "package-lock.json",
+      name: "npm",
       run: (script, args) => `npm run ${script} ${args ? `-- ${args}` : ""}`,
     }),
     pnpm: () => {
@@ -42,6 +44,7 @@ const getPackageManagerCommand = (packageManager) =>
       return {
         exec: useExec ? "pnpm exec" : "pnpx",
         lockfile: "pnpm-lock.yaml",
+        name: "pnpm",
         run: (script, args) =>
           includeDoubleDashBeforeArgs
             ? `pnpm run ${script} ${args ? `-- ${args}` : ""}`
@@ -51,6 +54,7 @@ const getPackageManagerCommand = (packageManager) =>
     yarn: () => ({
       exec: "yarn",
       lockfile: "yarn.lock",
+      name: "yarn",
       run: (script, args) => `yarn ${script} ${args || ""}`,
     }),
   })[packageManager]();
@@ -61,8 +65,17 @@ const getPackageManagerVersion = (packageManager) =>
 
 const getRandomString = (length) => crypto.randomBytes(length).toString("hex");
 
-const updatePackageJson = ({ APP_NAME, packageJson }) => {
+const removeUnusedDependencies = (dependencies, unusedDependencies) =>
+  Object.fromEntries(
+    Object.entries(dependencies).filter(
+      ([key]) => !unusedDependencies.includes(key),
+    ),
+  );
+
+const updatePackageJson = ({ APP_NAME, packageJson, packageManager }) => {
   const {
+    devDependencies,
+    prisma: { seed: prismaSeed, ...prisma },
     scripts: {
       // eslint-disable-next-line no-unused-vars
       "format:repo": _repoFormatScript,
@@ -72,6 +85,17 @@ const updatePackageJson = ({ APP_NAME, packageJson }) => {
 
   packageJson.update({
     name: APP_NAME,
+    devDependencies:
+      packageManager.name === "bun"
+        ? removeUnusedDependencies(devDependencies, ["ts-node"])
+        : devDependencies,
+    prisma: {
+      ...prisma,
+      seed:
+        packageManager.name === "bun"
+          ? prismaSeed.replace("ts-node", "bun")
+          : prismaSeed,
+    },
     scripts,
   });
 };
@@ -154,7 +178,7 @@ const main = async ({ packageManager, rootDirectory }) => {
       )
     : dockerfile;
 
-  updatePackageJson({ APP_NAME, packageJson });
+  updatePackageJson({ APP_NAME, packageJson, packageManager: pm });
 
   await Promise.all([
     fs.writeFile(FLY_TOML_PATH, toml.stringify(prodToml)),
