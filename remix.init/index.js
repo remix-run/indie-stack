@@ -24,6 +24,11 @@ const escapeRegExp = (string) =>
 const getPackageManagerCommand = (packageManager) =>
   // Inspired by https://github.com/nrwl/nx/blob/bd9b33eaef0393d01f747ea9a2ac5d2ca1fb87c6/packages/nx/src/utils/package-manager.ts#L38-L103
   ({
+    bun: () => ({
+      exec: "bunx",
+      lockfile: "bun.lockb",
+      run: (script, args) => `bun run ${script} ${args || ""}`,
+    }),
     npm: () => ({
       exec: "npx",
       lockfile: "package-lock.json",
