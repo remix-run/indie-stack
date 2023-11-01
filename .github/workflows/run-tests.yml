@@ -1,0 +1,113 @@
+name: 🧪 Run tests
+
+on:
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: ⬣ ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version-file: '.nvmrc'
+
+      - name: ➡️ Set Config
+        run: |
+          npm config set //npm.pkg.github.com/:_authToken ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          npm config set @paystackhq:registry https://npm.pkg.github.com
+
+      - name: 📥 Install deps
+        run: npm ci
+
+      - name: 🔬 Lint
+        run: npm run lint
+
+  typecheck:
+    name: ʦ TypeScript
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version-file: '.nvmrc'
+
+      - name: ➡️ Set Config
+        run: |
+          npm config set //npm.pkg.github.com/:_authToken ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          npm config set @paystackhq:registry https://npm.pkg.github.com
+
+      - name: 📥 Install deps
+        run: npm ci
+
+      - name: 🔎 Type check
+        run: npm run typecheck
+
+  vitest:
+    name: ⚡ Vitest
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version-file: '.nvmrc'
+
+      - name: ➡️ Set Config
+        run: |
+          npm config set //npm.pkg.github.com/:_authToken ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          npm config set @paystackhq:registry https://npm.pkg.github.com
+
+      - name: 📥 Install deps
+        run: npm ci
+
+      - name: ⚡ Run vitest
+        run: npm run test --coverage
+
+  cypress:
+    name: ⚫️ Cypress
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🏄 Copy test env vars
+        run: cp .env.example .env
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version-file: '.nvmrc'
+
+      - name: 📥 Install deps
+        run: npm ci
+
+      - name: ⚙️ Build
+        run: npm run build
+
+      - name: 🌳 Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          start: npm run start:mocks
+          wait-on: http://localhost:3000
+        env:
+          PORT: 3000

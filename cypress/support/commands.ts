@@ -1,3 +1,4 @@
+export {};
 declare global {
   namespace Cypress {
     interface Chainable {
@@ -15,7 +16,7 @@ declare global {
 }
 
 function login() {
-  return 'logged in'
+  return 'logged in';
 }
 
-Cypress.Commands.add("login", login);
+Cypress.Commands.add('login', login);

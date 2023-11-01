@@ -9,20 +9,18 @@
     "format": "prettier --write .",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/index.js",
-    "start:mocks": "binode --require ./mocks -- @remix-run/serve:remix-serve ./build/index.js",
     "test": "vitest",
     "test:e2e:dev": "start-server-and-test dev http://localhost:3000 \"npx cypress open\"",
-    "pretest:e2e:run": "npm run build",
-    "test:e2e:run": "cross-env PORT=8811 start-server-and-test start:mocks http://localhost:8811 \"npx cypress run\"",
+    "test:e2e:run": "cross-env PORT=8811 start-server-and-test dev:serve http://localhost:8811 \"npx cypress run\"",
     "typecheck": "tsc && tsc -p cypress",
     "validate": "run-p \"test -- --run\" lint typecheck test:e2e:run"
   },
   "dependencies": {
     "@paystackhq/pax": "^1.12.3",
-    "@remix-run/css-bundle": "*",
-    "@remix-run/node": "*",
-    "@remix-run/react": "*",
-    "@remix-run/serve": "*",
+    "@remix-run/css-bundle": "^2.2.0",
+    "@remix-run/node": "^2.2.0",
+    "@remix-run/react": "^2.2.0",
+    "@remix-run/serve": "^2.2.0",
     "isbot": "^3.6.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -30,9 +28,9 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",
-    "@remix-run/dev": "*",
-    "@remix-run/eslint-config": "*",
-    "@testing-library/cypress": "^9.0.0",
+    "@remix-run/dev": "^2.2.0",
+    "@remix-run/eslint-config": "^2.2.0",
+    "@testing-library/cypress": "^10.0.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@types/bcryptjs": "^2.4.2",
     "@types/eslint": "^8.40.2",
@@ -45,7 +43,7 @@
     "binode": "^1.0.5",
     "cookie": "^0.5.0",
     "cross-env": "^7.0.3",
-    "cypress": "^12.16.0",
+    "cypress": "^13.4.0",
     "eslint": "^8.43.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-cypress": "^2.13.3",
@@ -65,6 +63,6 @@
     "vitest": "^0.32.2"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   }
 }
