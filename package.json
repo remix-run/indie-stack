@@ -2,16 +2,16 @@
   "name": "indie-stack-template",
   "private": true,
   "sideEffects": false,
+  "type": "module",
   "scripts": {
-    "build": "remix build",
-    "dev": "remix dev -c \"npm run dev:serve\"",
-    "dev:serve": "binode --require ./mocks -- @remix-run/serve:remix-serve ./build/index.js",
+    "build": "remix vite:build",
+    "dev": "binode --require ./mocks/index.cjs -- vite:vite dev",
     "format": "prettier --write .",
     "format:repo": "npm run format && npm run lint -- --fix",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "setup": "prisma generate && prisma migrate deploy && prisma db seed",
-    "start": "remix-serve ./build/index.js",
-    "start:mocks": "binode --require ./mocks -- @remix-run/serve:remix-serve ./build/index.js",
+    "start": "dotenv -e .env remix-serve ./build/server/index.js",
+    "start:mocks": "binode --require ./mocks/index.cjs -- @remix-run/serve:remix-serve ./build/server/index.js",
     "test": "vitest",
     "test:e2e:dev": "start-server-and-test dev http://localhost:3000 \"npx cypress open\"",
     "pretest:e2e:run": "npm run build",
@@ -32,6 +32,7 @@
     "@remix-run/react": "*",
     "@remix-run/serve": "*",
     "bcryptjs": "^2.4.3",
+    "dotenv-cli": "^7.3.0",
     "isbot": "^3.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -80,7 +81,7 @@
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.2.2",
-    "vite": "^4.5.0",
+    "vite": "^5.0.12",
     "vite-tsconfig-paths": "^4.2.1",
     "vitest": "^0.34.6"
   },
@@ -88,6 +89,6 @@
     "node": ">=18.0.0"
   },
   "prisma": {
-    "seed": "ts-node -r tsconfig-paths/register prisma/seed.ts"
+    "seed": "ts-node -r tsconfig-paths/register --esm prisma/seed.ts"
   }
 }
