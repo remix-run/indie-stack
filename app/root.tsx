@@ -2,7 +2,6 @@ import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
   Links,
-  LiveReload,
   Meta,
   Outlet,
   Scripts,
@@ -28,7 +27,6 @@ export default function App() {
       <body className="h-full">
         <Outlet />
         <ScrollRestoration />
-        <LiveReload />
         <Scripts />
       </body>
     </html>
