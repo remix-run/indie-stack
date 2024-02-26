@@ -125,6 +125,8 @@ Prior to your first deployment, you'll need to do a few things:
   fly volumes create data --size 1 --app indie-stack-template-staging
   ```
 
+> **Note:** A region mismatch between your volume and app will cause your deployment to fail. To resolve this, you may need to add [primary_region option](https://fly.io/docs/reference/configuration/#primary-region) to your fly.toml.
+
 Now that everything is set up you can commit and push your changes to your repo. Every commit to your `main` branch will trigger a deployment to your production environment, and every commit to your `dev` branch will trigger a deployment to your staging environment.
 
 ### Connecting to your database
