@@ -1,9 +1,9 @@
-import { rest } from "msw";
+import { http } from "msw";
 import { setupServer } from "msw/node";
 
 // put one-off handlers that don't really need an entire file to themselves here
 const miscHandlers = [
-  rest.post(`${process.env.REMIX_DEV_HTTP_ORIGIN}/ping`, (req) =>
+  http.post(`${process.env.REMIX_DEV_HTTP_ORIGIN}/ping`, (req) =>
     req.passthrough(),
   ),
 ];
