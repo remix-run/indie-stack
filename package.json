@@ -90,6 +90,6 @@
     "node": ">=18.0.0"
   },
   "prisma": {
-    "seed": "ts-node -r tsconfig-paths/register --esm prisma/seed.ts"
+    "seed": "node --loader ts-node/esm -r tsconfig-paths/register prisma/seed.ts"
   }
 }
