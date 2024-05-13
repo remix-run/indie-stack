@@ -127,7 +127,7 @@ module.exports = {
 
     // Node
     {
-      files: [".eslintrc.cjs", "mocks/**/*.cjs"],
+      files: [".eslintrc.cjs", "mocks/**/*.js"],
       env: {
         node: true,
       },
