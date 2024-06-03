@@ -2,16 +2,17 @@
   "name": "indie-stack-template",
   "private": true,
   "sideEffects": false,
+  "type": "module",
   "scripts": {
     "build": "remix build",
     "dev": "remix dev -c \"npm run dev:serve\"",
-    "dev:serve": "binode --require ./mocks -- @remix-run/serve:remix-serve ./build/index.js",
+    "dev:serve": "NODE_OPTIONS=\"--require ./mocks\" remix-serve ./build/index.js",
     "format": "prettier --write .",
     "format:repo": "npm run format && npm run lint -- --fix",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "setup": "prisma generate && prisma migrate deploy && prisma db seed",
     "start": "remix-serve ./build/index.js",
-    "start:mocks": "binode --require ./mocks -- @remix-run/serve:remix-serve ./build/index.js",
+    "start:mocks": "NODE_OPTIONS=\"--require ./mocks\" remix-serve ./build/index.js",
     "test": "vitest",
     "test:e2e:dev": "start-server-and-test dev http://localhost:3000 \"npx cypress open\"",
     "pretest:e2e:run": "npm run build",
@@ -53,7 +54,6 @@
     "@vitejs/plugin-react": "^4.2.1",
     "@vitest/coverage-v8": "^1.5.3",
     "autoprefixer": "^10.4.19",
-    "binode": "^1.0.5",
     "cookie": "^0.6.0",
     "cross-env": "^7.0.3",
     "cypress": "^13.8.1",
@@ -89,6 +89,6 @@
     "node": ">=18.0.0"
   },
   "prisma": {
-    "seed": "ts-node -r tsconfig-paths/register prisma/seed.ts"
+    "seed": "ts-node --esm -r tsconfig-paths/register prisma/seed.ts"
   }
 }
