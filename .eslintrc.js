@@ -92,7 +92,7 @@ module.exports = {
     {
       files: ["**/*.md"],
       plugins: ["markdown"],
-      extends: ["plugin:markdown/recommended", "prettier"],
+      extends: ["plugin:markdown/recommended-legacy", "prettier"],
     },
 
     // Jest/Vitest
