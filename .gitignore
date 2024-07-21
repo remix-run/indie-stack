@@ -10,6 +10,7 @@ node_modules
 
 /build
 /public/build
+/public/mockServiceWorker.js
 .env
 
 /cypress/screenshots

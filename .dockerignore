@@ -4,4 +4,5 @@
 .env
 /.cache
 /public/build
+/public/mockServiceWorker.js
 /build
