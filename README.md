@@ -176,7 +176,7 @@ This project uses TypeScript. It's recommended to get TypeScript set up for your
 
 ### Linting
 
-This project uses ESLint for linting. That is configured in `.eslintrc.js`.
+This project uses ESLint for linting. That is configured in `.eslintrc.cjs`.
 
 ### Formatting
 
