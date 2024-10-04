@@ -17,6 +17,14 @@ const cleanupCypressFiles = ({ fileEntries, packageManager }) =>
     return [fs.writeFile(filePath, newContent)];
   });
 
+const cleanupScriptsForPnpm = (scripts) =>
+  Object.fromEntries(
+    Object.entries(scripts).map(([key, value]) => [
+      key,
+      value.replace("cross-env ", ""),
+    ]),
+  );
+
 const escapeRegExp = (string) =>
   // $& means the whole matched string
   string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -88,7 +96,9 @@ const updatePackageJson = ({ APP_NAME, packageJson, packageManager }) => {
     devDependencies:
       packageManager.name === "bun"
         ? removeUnusedDependencies(devDependencies, ["tsx"])
-        : devDependencies,
+        : packageManager.name === "pnpm"
+          ? removeUnusedDependencies(devDependencies, ["cross-env"])
+          : devDependencies,
     prisma: {
       ...prisma,
       seed:
@@ -96,7 +106,8 @@ const updatePackageJson = ({ APP_NAME, packageJson, packageManager }) => {
           ? prismaSeed.replace("tsx", "bun")
           : prismaSeed,
     },
-    scripts,
+    scripts:
+      packageManager.name === "pnpm" ? cleanupScriptsForPnpm(scripts) : scripts,
   });
 };
 
