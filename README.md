@@ -34,7 +34,13 @@ Click this button to create a [Gitpod](https://gitpod.io) workspace with the pro
 
 ## Development
 
-- First run this stack's `remix.init` script and commit the changes it makes to your project.
+- Install stack dependencies:
+
+  ```sh
+  npm install
+  ```
+
+- Run this stack's `remix.init` script and commit the changes it makes to your project.
 
   ```sh
   npx remix init
